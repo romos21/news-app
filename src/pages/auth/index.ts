@@ -1,4 +1,3 @@
-export * from "./layout";
-
-export * from './sign-in';
-export * from './sign-up';
+export * from './AuthLayout';
+export * from './SignInPage';
+export * from './SignUpPage';

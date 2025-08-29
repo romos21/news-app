@@ -1,2 +1,2 @@
-export * from './page';
-export * from './[id]';
+export * from './UsersPage';
+export * from './UserPage';

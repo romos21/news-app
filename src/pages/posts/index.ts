@@ -1,2 +1,2 @@
-export * from './page';
-export * from './[id]';
+export * from './PostsPage';
+export * from './PostPage';

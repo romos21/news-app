@@ -1,5 +1,4 @@
-export * from './layout';
-
+export * from './RootLayout';
 export * from './auth';
 export * from './posts';
 export * from './settings';
