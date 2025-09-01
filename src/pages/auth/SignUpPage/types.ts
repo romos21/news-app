@@ -1,4 +1,4 @@
-import type { User } from '@/models';
+import type { User } from '@/entities';
 
 export interface SignUpFormValues extends Omit<User, 'id'> {
   password: string;

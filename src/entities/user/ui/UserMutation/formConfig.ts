@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
-import type { SignUpFormValues } from './types';
-import { Gender, UserRoles } from '@/models';
+import type { UserMutationFormValues } from './types';
+import { Gender, UserRoles } from '@/entities';
 import type { FormField } from '@/features';
 import { Input, InputMask, InputPassword } from '@/shared/ui';
 
@@ -17,7 +17,7 @@ export enum FieldNames {
   ROLE = 'role',
 }
 
-export const defaultValues: SignUpFormValues = {
+export const defaultValues: UserMutationFormValues = {
   [FieldNames.FIRST_NAME]: 'awdawdwad',
   [FieldNames.LAST_NAME]: 'awdawdwad',
   [FieldNames.EMAIL]: 'awdawdwad@wad.ad',
@@ -43,7 +43,7 @@ export const validationSchema = Yup.object({
   [FieldNames.PASSWORD_REPEAT]: Yup.string().min(8).max(20).required(),
 });
 
-export const formFields: FormField<SignUpFormValues>[] = [
+export const formFields: FormField<UserMutationFormValues>[] = [
   {
     name: FieldNames.FIRST_NAME,
     Component: Input,

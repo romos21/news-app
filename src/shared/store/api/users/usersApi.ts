@@ -1,24 +1,24 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import type {
   CreateUserRequest,
   CreateUserResponse,
   DeleteUserResponse,
   GetAllUsersRequest,
   GetAllUsersResponse,
-  GetUserRequest,
   GetUserResponse,
   UpdateUserRequest,
   UpdateUserResponse,
 } from './types';
 import { API_USERS_BASE_URL, ApiUsersTags, API_USERS_URLS, API_USERS_REDUCER_PATH } from './constants';
+import { fetchBaseQuery } from '../lib';
 
-const usersApi = createApi({
+export const usersApi = createApi({
   reducerPath: API_USERS_REDUCER_PATH,
-  baseQuery: fetchBaseQuery({ baseUrl: API_USERS_BASE_URL }),
+  baseQuery: fetchBaseQuery(API_USERS_BASE_URL),
   tagTypes: Object.values(ApiUsersTags),
   endpoints: (build) => ({
-    getUser: build.query<GetUserResponse, GetUserRequest>({
-      query: () => API_USERS_URLS.GET,
+    getUser: build.query<GetUserResponse, string>({
+      query: (id) => `${API_USERS_URLS.GET}/${id}`,
       providesTags: (response) => [
         {
           type: ApiUsersTags.USER,
@@ -27,8 +27,12 @@ const usersApi = createApi({
       ],
     }),
     getAllUsers: build.query<GetAllUsersResponse, GetAllUsersRequest>({
-      query: () => API_USERS_URLS.GET_ALL,
+      query: (params) => ({
+        url: API_USERS_URLS.GET_ALL,
+        params,
+      }),
       providesTags: () => [ApiUsersTags.USERS],
+      transformResponse: (res: { users: GetAllUsersResponse }) => res?.users,
     }),
     createUser: build.mutation<CreateUserResponse, CreateUserRequest>({
       query: (date) => ({
@@ -65,6 +69,4 @@ export const {
   useLazyGetAllUsersQuery,
   useLazyGetUserQuery,
   useUpdateUserMutation,
-  reducer: usersReducer,
-  reducerPath: usersReducerPath,
 } = usersApi;

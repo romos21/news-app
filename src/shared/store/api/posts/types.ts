@@ -14,10 +14,10 @@ export interface Post {
 }
 
 export type GetPostResponse = ApiResponse<Post>;
-export type GetPostRequestPost = {};
+export type GetPostRequest = {};
 
 export type GetAllPostsResponse = ApiResponse<Post[]>;
-export type GetAllPostsRequestPost = {};
+export type GetAllPostsRequest = {};
 
 export type UpdatePostResponse = ApiResponse<Post>;
 export type UpdatePostRequest = Partial<Post>;

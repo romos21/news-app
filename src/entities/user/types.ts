@@ -18,4 +18,5 @@ export interface User {
   username: string;
   birthDate: Date | string;
   role: UserRoles;
+  image?: string;
 }

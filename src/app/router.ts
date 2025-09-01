@@ -1,42 +1,50 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from 'react-router';
 import {
-  RootLayout,
   AuthLayout,
   SignInPage,
   SignUpPage,
   PostsPage,
   PostPage,
-  SettingsPage,
+  MePage,
   UsersPage,
-  UserPage
-} from "@/pages";
+  UserPage,
+  AdminLayout,
+  AppLayout,
+} from '@/pages';
+import { RoutePath } from '@/shared/constants';
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    Component: RootLayout,
+    path: RoutePath.AUTH,
+    Component: AuthLayout,
+    children: [
+      { path: RoutePath.SIGN_IN, Component: SignInPage },
+      { path: RoutePath.SIGN_UP, Component: SignUpPage },
+    ],
+  },
+  {
+    path: RoutePath.APP,
+    Component: AppLayout,
     children: [
       {
-        path: 'posts',
+        path: RoutePath.POSTS,
         children: [
           { index: true, Component: PostsPage },
-          { path: ":id", Component: PostPage },
+          { path: ':id', Component: PostPage },
         ],
       },
+      { path: RoutePath.ME, Component: MePage },
       {
-        path: 'users',
+        path: RoutePath.ADMIN,
+        Component: AdminLayout,
         children: [
-          { index: true, Component: UsersPage },
-          { path: ":id", Component: UserPage },
-        ],
-      },
-      { path: "settings", Component: SettingsPage },
-      {
-        path: "auth",
-        Component: AuthLayout,
-        children: [
-          { path: "sign-in", Component: SignInPage },
-          { path: "sign-up", Component: SignUpPage },
+          {
+            path: RoutePath.USERS,
+            children: [
+              { index: true, Component: UsersPage },
+              { path: ':id', Component: UserPage },
+            ],
+          },
         ],
       },
     ],

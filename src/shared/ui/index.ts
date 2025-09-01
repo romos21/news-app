@@ -5,4 +5,8 @@ export * from './Container';
 export * from './Button';
 export * from './Toaster';
 export * from './Backdrop';
+export * from './Typography';
+export * from './Card';
+export * from './Chip';
+export * from './Divider';
 export * from './theme';

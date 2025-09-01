@@ -1,31 +1,26 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import type { GetMeResponse, SignInRequest, SignInResponse } from './types';
 import { API_AUTH_BASE_URL, ApiAuthTags, API_AUTH_URLS, API_AUTH_REDUCER_PATH } from './constants';
+import { fetchBaseQuery } from '../lib';
 
-const authApi = createApi({
+export const authApi = createApi({
   reducerPath: API_AUTH_REDUCER_PATH,
-  baseQuery: fetchBaseQuery({ baseUrl: API_AUTH_BASE_URL }),
-  tagTypes: Object.values(ApiAuthTags),
+  baseQuery: fetchBaseQuery(API_AUTH_BASE_URL),
+  tagTypes: [ApiAuthTags.ME],
   endpoints: (build) => ({
-    signIn: build.mutation<SignInResponse, SignInRequest, string>({
-      query: (date) => ({
+    signIn: build.mutation<SignInResponse, SignInRequest>({
+      query: (body) => ({
         url: API_AUTH_URLS.SIGN_IN,
         method: 'POST',
-        body: date,
+        body,
       }),
-      invalidatesTags: [ApiAuthTags.SIGN_IN],
+      invalidatesTags: () => [ApiAuthTags.ME],
     }),
-    getMe: build.query<GetMeResponse, undefined>({
+    getMe: build.query<GetMeResponse, void>({
       query: () => API_AUTH_URLS.GET_ME,
-      providesTags: [ApiAuthTags.ME],
+      providesTags: () => [ApiAuthTags.ME],
     }),
   }),
 });
 
-export const {
-  useSignInMutation,
-  useGetMeQuery,
-  useLazyGetMeQuery,
-  reducer: authReducer,
-  reducerPath: authReducerPath,
-} = authApi;
+export const { useSignInMutation, useGetMeQuery, useLazyGetMeQuery } = authApi;

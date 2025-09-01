@@ -1,16 +1,12 @@
+import type { User } from '@/entities';
 import type { ApiResponse } from '../types';
 
 export type SignInResponse = ApiResponse<{
-  token: string;
-  exp: Date;
+  accessToken: string;
 }>;
 
-export interface SignInRequest {
-  username: string;
+export type SignInRequest = Pick<User, 'username'> & {
   password: string;
-}
+};
 
-export type GetMeResponse = ApiResponse<{
-  username: string;
-  password: string;
-}>;
+export type GetMeResponse = ApiResponse<User>;

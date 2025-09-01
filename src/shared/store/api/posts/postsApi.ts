@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import type {
   GetAllPostsRequest,
   GetAllPostsResponse,
@@ -11,10 +11,11 @@ import type {
   DeletePostResponse,
 } from './types';
 import { API_POSTS_BASE_URL, API_POSTS_REDUCER_PATH, API_POSTS_URLS, ApiPostsTags } from './constants';
+import { fetchBaseQuery } from '../lib';
 
-const postsApi = createApi({
+export const postsApi = createApi({
   reducerPath: API_POSTS_REDUCER_PATH,
-  baseQuery: fetchBaseQuery({ baseUrl: API_POSTS_BASE_URL }),
+  baseQuery: fetchBaseQuery(API_POSTS_BASE_URL),
   tagTypes: Object.values(ApiPostsTags),
   endpoints: (build) => ({
     getPost: build.query<GetPostResponse, GetPostRequest>({
@@ -65,6 +66,4 @@ export const {
   useLazyGetAllPostsQuery,
   useLazyGetPostQuery,
   useUpdatePostMutation,
-  reducer: postsReducer,
-  reducerPath: postsReducerPath,
 } = postsApi;
