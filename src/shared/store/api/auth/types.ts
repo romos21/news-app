@@ -1,14 +1,16 @@
-export interface SignInResponse {
+import type { ApiResponse } from '../types';
+
+export type SignInResponse = ApiResponse<{
   token: string;
   exp: Date;
-}
+}>;
 
 export interface SignInRequest {
   username: string;
   password: string;
 }
 
-export interface GetMeResponse {
+export type GetMeResponse = ApiResponse<{
   username: string;
   password: string;
-}
+}>;

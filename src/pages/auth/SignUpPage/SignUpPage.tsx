@@ -1,57 +1,34 @@
 import type { FC } from 'react';
-import { useForm } from '@/shared/formManager';
-import { FormFields, defaultValues, validationSchema } from './formConfig';
+import { defaultValues, formFields, validationSchema } from './formConfig';
+import { Button } from '@/shared/ui';
+import { useCreateUserMutation, type CreateUserResponse } from '@/shared/store/api';
+import type { SignUpFormValues } from './types';
+import { Form } from '@/features';
 
 export const SignUpPage: FC = () => {
-  const { handleSubmit, register } = useForm({
-    defaultValues,
-    validationSchema,
-  });
-
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const [signUp, { isLoading, isError, isSuccess, data }] = useCreateUserMutation();
 
   return (
     <main>
-      <section>
-        <h1>Sign Up Page</h1>
-        <form onSubmit={onSubmit}>
-          <label>
-            First Name
-            <input {...register(FormFields.FIRST_NAME)} />
-          </label>
-          <label>
-            Last Name
-            <input {...register(FormFields.LAST_NAME)} />
-          </label>
-          <label>
-            Email
-            <input {...register(FormFields.EMAIL)} />
-          </label>
-          <label>
-            Phone
-            <input {...register(FormFields.PHONE)} />
-          </label>
-          <label>
-            Login
-            <input {...register(FormFields.LOGIN)} />
-          </label>
-          <label>
-            Password
-            <input
-              type='password'
-              {...register(FormFields.PASSWORD)}
-            />
-          </label>
-          <label>
-            Repeat Password
-            <input
-              type='password'
-              {...register(FormFields.PASSWORD)}
-            />
-          </label>
-          <button type='submit'>sign-in</button>
-        </form>
-      </section>
+      <h1>Sign Up Page</h1>
+      <Form<SignUpFormValues, CreateUserResponse>
+        defaultValues={defaultValues}
+        validationSchema={validationSchema}
+        formFields={formFields}
+        onSubmit={signUp}
+        isError={isError}
+        isLoading={isLoading}
+        isSuccess={isSuccess}
+        submitResult={data}
+        actionAdornment={
+          <Button
+            type='submit'
+            variant='contained'
+          >
+            Sign Up
+          </Button>
+        }
+      />
     </main>
   );
 };

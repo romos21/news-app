@@ -1,8 +1,28 @@
-import type { FieldValues, UseFormProps, UseFormReturn } from 'react-hook-form';
+import type {
+  FieldValues as RHFFormValues,
+  DefaultValues,
+  UseFormReturn,
+  FormState as RHFFormState,
+  SubmitHandler as RHFSubmitHandler,
+  FieldPath as RHFFieldPath,
+  UseFormRegisterReturn,
+} from 'react-hook-form';
 import type { ObjectSchema } from 'yup';
 
-export type Options = Omit<UseFormProps, 'resolver'> & {
-  validationSchema: ObjectSchema<FieldValues, any, FieldValues, any>;
+export type FieldValues = RHFFormValues;
+export type SubmitHandler<T extends FieldValues = FieldValues> = RHFSubmitHandler<T>;
+export type FieldPath<T extends FieldValues = FieldValues> = RHFFieldPath<T>;
+export type RegisteredFormField = UseFormRegisterReturn;
+
+export type FormOptions<T extends FieldValues = FieldValues> = {
+  defaultValues: DefaultValues<T>;
+  validationSchema: ObjectSchema<Partial<T>>;
 };
 
-export type UseForm = (options: Options) => UseFormReturn;
+type FormState<T extends FieldValues = FieldValues> = Omit<RHFFormState<T>, 'errors'> & {
+  errors: { [k: string]: string | undefined };
+};
+
+export type FormReturn<T extends FieldValues = FieldValues> = Omit<UseFormReturn<T>, 'formState'> & {
+  formState: FormState<T>;
+};

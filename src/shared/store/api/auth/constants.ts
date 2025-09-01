@@ -1,4 +1,4 @@
-export const API_AUTH_BASE_URL = `${process.env.API_PATH}/auth`;
+export const API_AUTH_BASE_URL = `${import.meta.env.VITE_API_URL}/auth`;
 export const API_AUTH_REDUCER_PATH = 'auth';
 export const API_AUTH_URLS = {
   SIGN_IN: `${API_AUTH_BASE_URL}/login`,

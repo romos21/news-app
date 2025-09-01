@@ -19,7 +19,12 @@ const usersApi = createApi({
   endpoints: (build) => ({
     getUser: build.query<GetUserResponse, GetUserRequest>({
       query: () => API_USERS_URLS.GET,
-      providesTags: (response) => [{ type: ApiUsersTags.USER, id: response?.id }],
+      providesTags: (response) => [
+        {
+          type: ApiUsersTags.USER,
+          id: response?.id,
+        },
+      ],
     }),
     getAllUsers: build.query<GetAllUsersResponse, GetAllUsersRequest>({
       query: () => API_USERS_URLS.GET_ALL,

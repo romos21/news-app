@@ -1,18 +1,20 @@
-interface User {
-  id: string;
-  username: string;
-}
+import type { User } from '@/models';
+import type { ApiResponse } from '../types';
 
-export interface GetUserResponse extends User {}
-export interface GetUserRequest {}
+type UserMutation = Omit<User, 'id'> & {
+  password: string;
+};
 
-export type GetAllUsersResponse = User[];
-export interface GetAllUsersRequest {}
+export type GetUserResponse = ApiResponse<User>;
+export type GetUserRequest = {};
 
-export interface UpdateUserResponse extends User {}
-export interface UpdateUserRequest extends Partial<User> {}
+export type GetAllUsersResponse = ApiResponse<User[]>;
+export type GetAllUsersRequest = {};
 
-export interface CreateUserResponse extends User {}
-export interface CreateUserRequest extends User {}
+export type UpdateUserResponse = ApiResponse<User>;
+export type UpdateUserRequest = Partial<UserMutation>;
 
-export interface DeleteUserResponse extends Pick<User, 'id'> {}
+export type CreateUserResponse = ApiResponse<User>;
+export type CreateUserRequest = UserMutation;
+
+export type DeleteUserResponse = ApiResponse<Pick<User, 'id'>>;

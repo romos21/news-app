@@ -3,7 +3,7 @@ import { RouterProvider } from 'react-router';
 import { router } from './router';
 import './index.css';
 import { I18nProvider } from '@/shared/i18n';
-import { ThemeProvider } from '@/shared/ui/theme';
+import { ThemeProvider } from '@/shared/ui';
 import { StoreProvider } from '@/shared/store';
 
 createRoot(document.getElementById('root')!).render(

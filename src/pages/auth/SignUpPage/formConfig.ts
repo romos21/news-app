@@ -1,31 +1,87 @@
 import * as Yup from 'yup';
+import type { SignUpFormValues } from './types';
+import { Gender, UserRoles } from '@/models';
+import type { FormField } from '@/features';
+import { Input, InputMask, InputPassword } from '@/shared/ui';
 
-export enum FormFields {
+export enum FieldNames {
   FIRST_NAME = 'firstName',
   LAST_NAME = 'lastName',
   EMAIL = 'email',
   PHONE = 'phone',
-  LOGIN = 'login',
+  USERNAME = 'username',
   PASSWORD = 'password',
   PASSWORD_REPEAT = 'passwordRepeat',
+  GENDER = 'gender',
+  BIRTH_DATE = 'birthDate',
+  ROLE = 'role',
 }
 
-export const defaultValues = {
-  [FormFields.FIRST_NAME]: '',
-  [FormFields.LAST_NAME]: '',
-  [FormFields.EMAIL]: '',
-  [FormFields.PHONE]: '',
-  [FormFields.LOGIN]: '',
-  [FormFields.PASSWORD]: '',
-  [FormFields.PASSWORD_REPEAT]: '',
+export const defaultValues: SignUpFormValues = {
+  [FieldNames.FIRST_NAME]: 'awdawdwad',
+  [FieldNames.LAST_NAME]: 'awdawdwad',
+  [FieldNames.EMAIL]: 'awdawdwad@wad.ad',
+  [FieldNames.PHONE]: '1212121212',
+  [FieldNames.USERNAME]: '12121saswad',
+  [FieldNames.GENDER]: Gender.MALE,
+  [FieldNames.BIRTH_DATE]: new Date(),
+  [FieldNames.ROLE]: UserRoles.USER,
+  [FieldNames.PASSWORD]: '12345678',
+  [FieldNames.PASSWORD_REPEAT]: '12345678',
 };
 
 export const validationSchema = Yup.object({
-  [FormFields.FIRST_NAME]: Yup.string().required(),
-  [FormFields.LAST_NAME]: Yup.string().required(),
-  [FormFields.EMAIL]: Yup.string().email().required(),
-  [FormFields.PHONE]: Yup.string().required(),
-  [FormFields.LOGIN]: Yup.string().required(),
-  [FormFields.PASSWORD]: Yup.string().min(8).max(20).required(),
-  [FormFields.PASSWORD_REPEAT]: Yup.string().min(8).max(20).required(),
+  [FieldNames.FIRST_NAME]: Yup.string().required(),
+  [FieldNames.LAST_NAME]: Yup.string().required(),
+  [FieldNames.EMAIL]: Yup.string().email().required(),
+  [FieldNames.PHONE]: Yup.string().required(),
+  [FieldNames.USERNAME]: Yup.string().required(),
+  [FieldNames.GENDER]: Yup.string().oneOf(Object.values(Gender)).required(),
+  [FieldNames.BIRTH_DATE]: Yup.date().required(),
+  [FieldNames.ROLE]: Yup.string().oneOf(Object.values(UserRoles)),
+  [FieldNames.PASSWORD]: Yup.string().min(8).max(20).required(),
+  [FieldNames.PASSWORD_REPEAT]: Yup.string().min(8).max(20).required(),
 });
+
+export const formFields: FormField<SignUpFormValues>[] = [
+  {
+    name: FieldNames.FIRST_NAME,
+    Component: Input,
+  },
+  {
+    name: FieldNames.LAST_NAME,
+    Component: Input,
+  },
+  {
+    name: FieldNames.EMAIL,
+    Component: Input,
+  },
+  {
+    name: FieldNames.PHONE,
+    Component: InputMask,
+  },
+  {
+    name: FieldNames.USERNAME,
+    Component: Input,
+  },
+  {
+    name: FieldNames.GENDER,
+    Component: InputMask,
+  },
+  {
+    name: FieldNames.BIRTH_DATE,
+    Component: InputMask,
+  },
+  {
+    name: FieldNames.ROLE,
+    Component: InputMask,
+  },
+  {
+    name: FieldNames.PASSWORD,
+    Component: InputPassword,
+  },
+  {
+    name: FieldNames.PASSWORD_REPEAT,
+    Component: InputPassword,
+  },
+];

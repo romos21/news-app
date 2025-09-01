@@ -1,34 +1,34 @@
 import type { FC } from 'react';
-import { useForm } from '@/shared/formManager';
-import { FormFields, defaultValues, validationSchema } from './formConfig';
+import { defaultValues, formFields, validationSchema } from './formConfig';
+import { Button } from '@/shared/ui';
+import { useSignInMutation, type SignInResponse } from '@/shared/store/api';
+import type { SignInFormValues } from './types';
+import { Form } from '@/features';
 
 export const SignInPage: FC = () => {
-  const { handleSubmit, register } = useForm({
-    defaultValues,
-    validationSchema,
-  });
-
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const [signIn, { isLoading, isError, isSuccess, data }] = useSignInMutation();
 
   return (
     <main>
-      <section>
-        <h1>SignInPage</h1>
-        <form onSubmit={onSubmit}>
-          <label>
-            Login
-            <input {...register(FormFields.LOGIN)} />
-          </label>
-          <label>
-            Password
-            <input
-              type='password'
-              {...register(FormFields.PASSWORD)}
-            />
-          </label>
-          <button type='submit'>sign-in</button>
-        </form>
-      </section>
+      <h1>Sign In Page</h1>
+      <Form<SignInFormValues, SignInResponse>
+        defaultValues={defaultValues}
+        validationSchema={validationSchema}
+        formFields={formFields}
+        onSubmit={signIn}
+        isError={isError}
+        isLoading={isLoading}
+        isSuccess={isSuccess}
+        submitResult={data}
+        actionAdornment={
+          <Button
+            type='submit'
+            variant='contained'
+          >
+            Sign Up
+          </Button>
+        }
+      />
     </main>
   );
 };
