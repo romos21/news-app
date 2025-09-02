@@ -10,7 +10,7 @@ import {
   Tooltip,
   Divider,
 } from '@/shared/ui';
-import { ThumbUp, ThumbDown, Comment } from '@/shared/ui/icons';
+import { ThumbUp, ThumbDown, Star } from '@/shared/ui/icons';
 import { PostUpdateAction, type Post } from '../types';
 import { NavLink } from 'react-router';
 import { useMyPostManipulationsState } from '../lib';
@@ -66,7 +66,7 @@ export const PostCard: FC<PostCardProps> = ({ data: { id, body, reactions, title
     });
   };
 
-  const addToStarred = () => {
+  const setStarred = () => {
     updatePost({
       id,
       action: PostUpdateAction.STARRED,
@@ -114,7 +114,15 @@ export const PostCard: FC<PostCardProps> = ({ data: { id, body, reactions, title
         </Typography>
       </CardContent>
       <Divider />
-      <CardActions sx={{ justifyContent: 'flex-end', px: 2 }}>
+      <CardActions sx={{ justifyContent: 'space-between', px: 2 }}>
+        <Tooltip title='Dislike'>
+          <IconButton
+            size='large'
+            onClick={setStarred}
+          >
+            <Star color={isStarred ? 'warning' : 'inherit'} />
+          </IconButton>
+        </Tooltip>
         <Container sx={{ display: 'flex', gap: 2 }}>
           <Container sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Tooltip title='Like'>
@@ -148,14 +156,6 @@ export const PostCard: FC<PostCardProps> = ({ data: { id, body, reactions, title
               {reactions.dislikes}
             </Typography>
           </Container>
-          <Tooltip title='Comment'>
-            <IconButton
-              size='small'
-              onClick={() => console.log('comment')}
-            >
-              <Comment />
-            </IconButton>
-          </Tooltip>
         </Container>
       </CardActions>
     </Card>
