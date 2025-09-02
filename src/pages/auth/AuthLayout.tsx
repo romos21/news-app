@@ -6,8 +6,8 @@ import { Navigate, Outlet } from 'react-router';
 export const AuthLayout: FC = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
-  // if (isAuthenticated) {
-  //   return <Navigate to={PAGE_PATHS.POSTS} />;
-  // }
+  if (isAuthenticated) {
+    return <Navigate to={PAGE_PATHS.ME} />;
+  }
   return <Outlet />;
 };

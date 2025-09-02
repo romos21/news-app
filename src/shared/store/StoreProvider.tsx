@@ -6,8 +6,7 @@ import { persistor, store } from './store';
 export const StoreProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Provider store={store}>
-      {children}
-      {/* <PersistGate persistor={persistor}>{children}</PersistGate> */}
+      <PersistGate persistor={persistor}>{children}</PersistGate>
     </Provider>
   );
 };

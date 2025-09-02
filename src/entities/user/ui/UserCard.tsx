@@ -1,10 +1,7 @@
 import type { FC } from 'react';
-import { Typography, Card, CardHeader, Avatar, Toaster, Chip, Container } from '@/shared/ui';
-import { useParams } from 'react-router';
-import { skipToken, useGetUserQuery } from '@/shared/store/api';
-import { getFullName } from '../../lib';
-import { Backdrop } from '@mui/material';
-import type { User } from '../../types';
+import { Typography, Card, CardHeader, Avatar, Chip } from '@/shared/ui';
+import { getFullName } from '../lib';
+import type { User } from '../types';
 
 export type UserCardProps = {
   data: User;

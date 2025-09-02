@@ -7,9 +7,9 @@ import {
   Cake as CakeIcon,
   Person as PersonIcon,
   Transgender as GenderIcon,
-} from '@mui/icons-material';
-import type { User } from '../../types';
-import { UserAvatar } from '../UserAvatar/UserAvatar';
+} from '@/shared/ui/icons';
+import type { User } from '../types';
+import { UserAvatar } from './UserAvatar';
 
 export type UserProfileProps = {
   data: User;

@@ -1,7 +1,6 @@
-// features/auth/authSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
 import { authApi } from '../api';
-import type { User } from '@/entities';
+import type { User } from '@/entities/user';
 
 interface AuthState {
   isAuthenticated: boolean;

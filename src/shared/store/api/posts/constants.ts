@@ -6,7 +6,7 @@ export const API_POSTS_URLS = {
   UPDATE: API_POSTS_BASE_URL,
   GET: API_POSTS_BASE_URL,
   GET_BY_USER: `${API_POSTS_BASE_URL}/user`,
-  GET_ALL: API_POSTS_BASE_URL,
+  GET_ALL: `${API_POSTS_BASE_URL}/search`,
 };
 export enum ApiPostsTags {
   POST = 'POST',

@@ -1,7 +1,7 @@
 import type { FC } from 'react';
-import type { User } from '../../types';
+import type { User } from '../types';
 import { Avatar } from '@/shared/ui';
-import { getEmptyAvatar } from '../../lib';
+import { getEmptyAvatar } from '../lib';
 
 type UserAvatarProps = {
   data: User;

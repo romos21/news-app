@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { authApi, usersApi, postsApi } from './api';
-import { authSlice } from './reducers/auth';
+import { authSlice, postsSlice } from './reducers';
 import { useSelector, useDispatch, type TypedUseSelectorHook } from 'react-redux';
 import type { AppDispatch, RootState } from './types';
 
@@ -17,6 +17,7 @@ const rootReducer = combineReducers({
   [usersApi.reducerPath]: usersApi.reducer,
   [postsApi.reducerPath]: postsApi.reducer,
   [authSlice.reducerPath]: authSlice.reducer,
+  [postsSlice.reducerPath]: postsSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

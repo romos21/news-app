@@ -3,7 +3,6 @@ import type {
   CreateUserRequest,
   CreateUserResponse,
   DeleteUserResponse,
-  GetAllUsersRequest,
   GetAllUsersResponse,
   GetUserResponse,
   UpdateUserRequest,
@@ -11,6 +10,8 @@ import type {
 } from './types';
 import { API_USERS_BASE_URL, ApiUsersTags, API_USERS_URLS, API_USERS_REDUCER_PATH } from './constants';
 import { fetchBaseQuery } from '../lib';
+import { getFullName } from '@/entities/user/lib';
+import type { SelectOption } from '@/shared/ui';
 
 export const usersApi = createApi({
   reducerPath: API_USERS_REDUCER_PATH,
@@ -26,27 +27,44 @@ export const usersApi = createApi({
         },
       ],
     }),
-    getAllUsers: build.query<GetAllUsersResponse, GetAllUsersRequest>({
-      query: (params) => ({
+    getAllUsers: build.query<GetAllUsersResponse, string>({
+      query: (q) => ({
         url: API_USERS_URLS.GET_ALL,
-        params,
+        params: { q },
       }),
       providesTags: () => [ApiUsersTags.USERS],
       transformResponse: (res: { users: GetAllUsersResponse }) => res?.users,
     }),
+    getUserFilterOptions: build.query<SelectOption[], void>({
+      query: () => API_USERS_URLS.GET_ALL,
+      providesTags: () => [ApiUsersTags.USERS],
+      transformResponse: (res: { users: GetAllUsersResponse }): SelectOption[] => {
+        return [
+          // default value to reset filter.
+          {
+            label: 'All',
+            value: '',
+          },
+          ...res?.users.map((user) => ({
+            label: getFullName(user),
+            value: user.id.toString(),
+          })),
+        ];
+      },
+    }),
     createUser: build.mutation<CreateUserResponse, CreateUserRequest>({
-      query: (date) => ({
+      query: (body) => ({
         url: API_USERS_URLS.CREATE,
         method: 'POST',
-        body: date,
+        body,
       }),
       invalidatesTags: (response) => [ApiUsersTags.USERS, { type: ApiUsersTags.USER, id: response?.id }],
     }),
     updateUser: build.mutation<UpdateUserResponse, UpdateUserRequest>({
-      query: (date) => ({
+      query: (body) => ({
         method: 'PATCH',
         url: API_USERS_URLS.UPDATE,
-        body: date,
+        body,
       }),
       invalidatesTags: (response) => [ApiUsersTags.USERS, { type: ApiUsersTags.USER, id: response?.id }],
     }),
@@ -69,4 +87,6 @@ export const {
   useLazyGetAllUsersQuery,
   useLazyGetUserQuery,
   useUpdateUserMutation,
+  useGetUserFilterOptionsQuery,
+  useLazyGetUserFilterOptionsQuery,
 } = usersApi;

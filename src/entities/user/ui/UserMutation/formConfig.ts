@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import type { UserMutationFormValues } from './types';
-import { Gender, UserRoles } from '@/entities';
+import { Gender, UserRoles } from '@/entities/user';
 import type { FormField } from '@/features';
 import { Input, InputMask, InputPassword } from '@/shared/ui';
 

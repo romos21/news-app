@@ -1,21 +1,12 @@
-import { useEffect, type FC } from 'react';
-import { useNavigate } from 'react-router';
+import { type FC } from 'react';
 import { defaultValues, formFields, validationSchema } from './formConfig';
 import { Button } from '@/shared/ui';
 import { useSignInMutation, type SignInResponse } from '@/shared/store/api';
 import type { SignInFormValues } from './types';
 import { Form } from '@/features';
-import { PAGE_PATHS } from '@/shared/constants';
 
 export const SignInPage: FC = () => {
   const [signIn, { isLoading, isError, isSuccess, data }] = useSignInMutation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isSuccess) {
-      navigate(PAGE_PATHS.ME);
-    }
-  }, [isSuccess]);
 
   return (
     <main>

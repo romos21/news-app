@@ -13,8 +13,8 @@ export type FormProps<TFormValues extends FieldValues, TResponse extends ApiResp
   isSuccess?: boolean;
   isLoading?: boolean;
   submitResult: TResponse | undefined;
-  actionAdornment: ReactNode;
-  onSubmit: SubmitHandler<TFormValues>;
+  actionAdornment?: ReactNode;
+  onSubmit: (values: TFormValues) => void;
   formFields: FormField<TFormValues>[];
 };
 

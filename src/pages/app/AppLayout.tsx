@@ -1,5 +1,6 @@
 import { PAGE_PATHS } from '@/shared/constants';
 import { useAppSelector } from '@/shared/store';
+import { Container } from '@/shared/ui';
 import { type FC } from 'react';
 import { Navigate, Outlet } from 'react-router';
 
@@ -9,5 +10,11 @@ export const AppLayout: FC = () => {
   if (!isAuthenticated) {
     return <Navigate to={PAGE_PATHS.SIGN_IN} />;
   }
-  return <Outlet />;
+  return (
+    <Container>
+      <Container sx={{ margin: '40px auto', maxWidth: 1400 }}>
+        <Outlet />
+      </Container>
+    </Container>
+  );
 };

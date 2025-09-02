@@ -3,3 +3,4 @@ export * from './users';
 export * from './posts';
 
 export { skipToken } from '@reduxjs/toolkit/query/react';
+export { useDebounce } from 'use-debounce';

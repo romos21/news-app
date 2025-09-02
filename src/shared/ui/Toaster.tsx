@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from 'react';
 import { Snackbar, Alert, IconButton, type AlertProps, type SnackbarProps, type AlertColor } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Close as CloseIcon } from './icons';
 
 type ToasterProps = PropsWithChildren<AlertProps & Pick<SnackbarProps, 'open' | 'onClose'>>;
 

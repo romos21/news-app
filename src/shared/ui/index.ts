@@ -9,4 +9,6 @@ export * from './Typography';
 export * from './Card';
 export * from './Chip';
 export * from './Divider';
+export * from './Tooltip';
+export * from './Select';
 export * from './theme';

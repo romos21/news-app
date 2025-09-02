@@ -1,6 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import type {
-  GetAllPostsRequest,
   GetAllPostsResponse,
   GetPostRequest,
   GetPostResponse,
@@ -22,30 +21,57 @@ export const postsApi = createApi({
       query: () => API_POSTS_URLS.GET,
       providesTags: (response) => [{ type: ApiPostsTags.POST, id: response?.id }],
     }),
-    getUserPosts: build.query<GetAllPostsResponse, GetAllPostsRequest>({
-      query: () => API_POSTS_URLS.GET_BY_USER,
+    getUserPosts: build.query<GetAllPostsResponse, string>({
+      query: (userId) => `${API_POSTS_URLS.GET_BY_USER}/${userId}`,
       providesTags: () => [ApiPostsTags.POSTS],
+      transformResponse: (res: { posts: GetAllPostsResponse }) => res?.posts,
     }),
-    getAllPosts: build.query<GetAllPostsResponse, GetAllPostsRequest>({
-      query: () => API_POSTS_URLS.GET_ALL,
+    getAllPosts: build.query<GetAllPostsResponse, string>({
+      query: (q) => ({
+        url: API_POSTS_URLS.GET_ALL,
+        params: { q },
+      }),
       providesTags: () => [ApiPostsTags.POSTS],
+      transformResponse: (res: { posts: GetAllPostsResponse }) => res?.posts,
     }),
     createPost: build.mutation<CreatePostResponse, CreatePostRequest>({
-      query: (date) => ({
+      query: (body) => ({
         url: API_POSTS_URLS.CREATE,
         method: 'POST',
-        body: date,
+        body,
       }),
-      invalidatesTags: (response) => [ApiPostsTags.POSTS, { type: ApiPostsTags.POST, id: response?.id }],
     }),
     updatePost: build.mutation<UpdatePostResponse, UpdatePostRequest>({
-      query: ({ id, ...date }) => ({
+      query: ({ id, action, ...body }) => ({
         method: 'PATCH',
-        url: API_POSTS_URLS.UPDATE,
-        params: { id },
-        body: date,
+        url: `${API_POSTS_URLS.UPDATE}/${id}`,
+        body,
       }),
-      invalidatesTags: (response) => [ApiPostsTags.POSTS, { type: ApiPostsTags.POST, id: response?.id }],
+      async onQueryStarted(res, { dispatch, queryFulfilled }) {
+        const { data: updatedPost } = await queryFulfilled;
+
+        // update getAllPosts API cache
+        dispatch(
+          postsApi.util.updateQueryData('getAllPosts', '', (draft) => {
+            draft.forEach((post) => {
+              if (post.id === updatedPost.id) {
+                Object.assign(post, updatedPost);
+              }
+            });
+          }),
+        );
+
+        // update getUserPosts API cache
+        dispatch(
+          postsApi.util.updateQueryData('getUserPosts', '', (draft) => {
+            draft.forEach((post) => {
+              if (post.id === updatedPost.id) {
+                Object.assign(post, updatedPost);
+              }
+            });
+          }),
+        );
+      },
     }),
     deletePost: build.mutation<DeletePostResponse, string>({
       query: (id) => ({
@@ -53,7 +79,6 @@ export const postsApi = createApi({
         url: API_POSTS_URLS.DELETE,
         params: { id },
       }),
-      invalidatesTags: (response) => [ApiPostsTags.POSTS, { type: ApiPostsTags.POST, id: response?.id }],
     }),
   }),
 });
@@ -62,6 +87,8 @@ export const {
   useCreatePostMutation,
   useDeletePostMutation,
   useGetAllPostsQuery,
+  useGetUserPostsQuery,
+  useLazyGetUserPostsQuery,
   useGetPostQuery,
   useLazyGetAllPostsQuery,
   useLazyGetPostQuery,

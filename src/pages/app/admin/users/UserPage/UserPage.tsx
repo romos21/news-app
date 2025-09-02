@@ -1,4 +1,4 @@
-import { UserProfile } from '@/entities';
+import { UserProfile } from '@/entities/user';
 import { skipToken, useGetUserQuery } from '@/shared/store/api';
 import { Backdrop, Toaster } from '@/shared/ui';
 import type { FC } from 'react';

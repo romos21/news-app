@@ -1,4 +1,4 @@
-import type { User } from '@/entities';
+import type { User } from '@/entities/user';
 import type { ApiResponse } from '../types';
 
 export type SignInResponse = ApiResponse<{

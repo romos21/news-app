@@ -1,12 +1,12 @@
 import type { ChangeEvent, FC, PropsWithChildren } from 'react';
 import { useColorScheme } from '@mui/material/styles';
-import type { Mode } from './types';
+import type { ThemeMode } from './types';
 
 export const ThemeSwitcher: FC<PropsWithChildren> = () => {
   const { mode, setMode } = useColorScheme();
 
   const onChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setMode(event.target.value as Mode);
+    setMode(event.target.value as ThemeMode);
   };
 
   if (!mode) {

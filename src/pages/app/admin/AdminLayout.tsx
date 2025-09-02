@@ -1,4 +1,4 @@
-import { UserRoles } from '@/entities';
+import { UserRoles } from '@/entities/user';
 import { PAGE_PATHS } from '@/shared/constants';
 import { useAppSelector } from '@/shared/store';
 import { type FC } from 'react';
