@@ -11,6 +11,7 @@ export const Input: FC<InputProps> = ({ error, ...rest }) => {
   return (
     <TextField
       {...rest}
+      fullWidth
       error={!!error}
       helperText={error}
     />

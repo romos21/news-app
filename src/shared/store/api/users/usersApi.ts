@@ -8,43 +8,31 @@ import type {
   UpdateUserRequest,
   UpdateUserResponse,
 } from './types';
-import { API_USERS_BASE_URL, ApiUsersTags, API_USERS_URLS, API_USERS_REDUCER_PATH } from './constants';
+import { API_USERS_BASE_URL, API_USERS_URLS, API_USERS_REDUCER_PATH, DEFAULT_USER_FILTER_OPTION } from './constants';
 import { fetchBaseQuery } from '../lib';
 import { getFullName } from '@/entities/user/lib';
 import type { SelectOption } from '@/shared/ui';
+import { authApi } from '../auth';
 
 export const usersApi = createApi({
   reducerPath: API_USERS_REDUCER_PATH,
   baseQuery: fetchBaseQuery(API_USERS_BASE_URL),
-  tagTypes: Object.values(ApiUsersTags),
   endpoints: (build) => ({
     getUser: build.query<GetUserResponse, string>({
       query: (id) => `${API_USERS_URLS.GET}/${id}`,
-      providesTags: (response) => [
-        {
-          type: ApiUsersTags.USER,
-          id: response?.id,
-        },
-      ],
     }),
     getAllUsers: build.query<GetAllUsersResponse, string>({
       query: (q) => ({
         url: API_USERS_URLS.GET_ALL,
         params: { q },
       }),
-      providesTags: () => [ApiUsersTags.USERS],
       transformResponse: (res: { users: GetAllUsersResponse }) => res?.users,
     }),
     getUserFilterOptions: build.query<SelectOption[], void>({
       query: () => API_USERS_URLS.GET_ALL,
-      providesTags: () => [ApiUsersTags.USERS],
       transformResponse: (res: { users: GetAllUsersResponse }): SelectOption[] => {
         return [
-          // default value to reset filter.
-          {
-            label: 'All',
-            value: '',
-          },
+          DEFAULT_USER_FILTER_OPTION,
           ...res?.users.map((user) => ({
             label: getFullName(user),
             value: user.id.toString(),
@@ -58,23 +46,49 @@ export const usersApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: (response) => [ApiUsersTags.USERS, { type: ApiUsersTags.USER, id: response?.id }],
     }),
     updateUser: build.mutation<UpdateUserResponse, UpdateUserRequest>({
-      query: (body) => ({
-        method: 'PATCH',
-        url: API_USERS_URLS.UPDATE,
+      query: ({ id, ...body }) => ({
+        method: 'PUT',
+        url: `${API_USERS_URLS.UPDATE}/${id}`,
         body,
       }),
-      invalidatesTags: (response) => [ApiUsersTags.USERS, { type: ApiUsersTags.USER, id: response?.id }],
+      async onQueryStarted(res, { dispatch, queryFulfilled }) {
+        const { data: updatedUser } = await queryFulfilled;
+
+        // update getAllUsers API cache
+        dispatch(
+          usersApi.util.updateQueryData('getAllUsers', '', (draft) => {
+            draft.forEach((user) => {
+              if (user.id === updatedUser.id) {
+                Object.assign(user, updatedUser);
+              }
+            });
+          }),
+        );
+
+        // update getUser API cache
+        if (res.id) {
+          dispatch(
+            usersApi.util.updateQueryData('getUser', res.id.toString(), (draft) => {
+              Object.assign(draft, updatedUser);
+            }),
+          );
+          dispatch(
+            authApi.util.updateQueryData('getMe', undefined, (draft) => {
+              if (draft.id === res.id) {
+                Object.assign(draft, updatedUser);
+              }
+            }),
+          );
+        }
+      },
     }),
     deleteUser: build.mutation<DeleteUserResponse, string>({
       query: (id) => ({
         method: 'DELETE',
-        url: API_USERS_URLS.DELETE,
-        params: { id },
+        url: `${API_USERS_URLS.DELETE}/${id}`,
       }),
-      invalidatesTags: (response) => [ApiUsersTags.USERS, { type: ApiUsersTags.USER, id: response?.id }],
     }),
   }),
 });

@@ -7,7 +7,7 @@ export const API_USERS_URLS = {
   GET: API_USERS_BASE_URL,
   GET_ALL: `${API_USERS_BASE_URL}/search`,
 };
-export enum ApiUsersTags {
-  USER = 'USER',
-  USERS = 'USERS',
-}
+export const DEFAULT_USER_FILTER_OPTION = {
+  label: 'All',
+  value: '',
+};

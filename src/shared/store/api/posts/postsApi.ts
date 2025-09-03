@@ -9,21 +9,18 @@ import type {
   UpdatePostRequest,
   DeletePostResponse,
 } from './types';
-import { API_POSTS_BASE_URL, API_POSTS_REDUCER_PATH, API_POSTS_URLS, ApiPostsTags } from './constants';
+import { API_POSTS_BASE_URL, API_POSTS_REDUCER_PATH, API_POSTS_URLS, DEFAULT_REACTIONS_ENTITY } from './constants';
 import { fetchBaseQuery } from '../lib';
 
 export const postsApi = createApi({
   reducerPath: API_POSTS_REDUCER_PATH,
   baseQuery: fetchBaseQuery(API_POSTS_BASE_URL),
-  tagTypes: Object.values(ApiPostsTags),
   endpoints: (build) => ({
-    getPost: build.query<GetPostResponse, GetPostRequest>({
-      query: () => API_POSTS_URLS.GET,
-      providesTags: (response) => [{ type: ApiPostsTags.POST, id: response?.id }],
+    getPost: build.query<GetPostResponse, string>({
+      query: (postId) => `${API_POSTS_URLS.GET}/${postId}`,
     }),
     getUserPosts: build.query<GetAllPostsResponse, string>({
       query: (userId) => `${API_POSTS_URLS.GET_BY_USER}/${userId}`,
-      providesTags: () => [ApiPostsTags.POSTS],
       transformResponse: (res: { posts: GetAllPostsResponse }) => res?.posts,
     }),
     getAllPosts: build.query<GetAllPostsResponse, string>({
@@ -31,7 +28,6 @@ export const postsApi = createApi({
         url: API_POSTS_URLS.GET_ALL,
         params: { q },
       }),
-      providesTags: () => [ApiPostsTags.POSTS],
       transformResponse: (res: { posts: GetAllPostsResponse }) => res?.posts,
     }),
     createPost: build.mutation<CreatePostResponse, CreatePostRequest>({
@@ -40,6 +36,28 @@ export const postsApi = createApi({
         method: 'POST',
         body,
       }),
+      async onQueryStarted(res, { dispatch, queryFulfilled }) {
+        const { data: createdPost } = await queryFulfilled;
+
+        const formattedPost = {
+          ...createdPost,
+          reactions: DEFAULT_REACTIONS_ENTITY,
+        };
+
+        // update getAllPosts API cache
+        dispatch(
+          postsApi.util.updateQueryData('getAllPosts', '', (draft) => {
+            draft.unshift(formattedPost);
+          }),
+        );
+
+        // update getUserPosts API cache
+        dispatch(
+          postsApi.util.updateQueryData('getUserPosts', '', (draft) => {
+            draft.unshift(formattedPost);
+          }),
+        );
+      },
     }),
     updatePost: build.mutation<UpdatePostResponse, UpdatePostRequest>({
       query: ({ id, action, ...body }) => ({
@@ -73,12 +91,28 @@ export const postsApi = createApi({
         );
       },
     }),
-    deletePost: build.mutation<DeletePostResponse, string>({
+    deletePost: build.mutation<DeletePostResponse, number>({
       query: (id) => ({
         method: 'DELETE',
-        url: API_POSTS_URLS.DELETE,
-        params: { id },
+        url: `${API_POSTS_URLS.DELETE}/${id}`,
       }),
+      async onQueryStarted(res, { dispatch, queryFulfilled }) {
+        const { data: deletedPost } = await queryFulfilled;
+
+        // update getAllPosts API cache
+        dispatch(
+          postsApi.util.updateQueryData('getAllPosts', '', (draft) => {
+            return draft.filter((post) => post.id !== deletedPost.id) as GetAllPostsResponse;
+          }),
+        );
+
+        // update getUserPosts API cache
+        dispatch(
+          postsApi.util.updateQueryData('getUserPosts', '', (draft) => {
+            return draft.filter((post) => post.id !== deletedPost.id) as GetAllPostsResponse;
+          }),
+        );
+      },
     }),
   }),
 });

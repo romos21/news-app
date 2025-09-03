@@ -1,10 +1,10 @@
 import { PAGE_PATHS } from '@/shared/constants';
-import { useAppSelector } from '@/shared/store';
+import { useAuthGuard } from '@/shared/store';
 import { type FC } from 'react';
 import { Navigate, Outlet } from 'react-router';
 
 export const AuthLayout: FC = () => {
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useAuthGuard();
 
   if (isAuthenticated) {
     return <Navigate to={PAGE_PATHS.ME} />;

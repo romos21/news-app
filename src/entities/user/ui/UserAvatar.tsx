@@ -4,20 +4,20 @@ import { Avatar } from '@/shared/ui';
 import { getEmptyAvatar } from '../lib';
 
 type UserAvatarProps = {
-  data: User;
+  user: User;
 };
 
-export const UserAvatar: FC<UserAvatarProps> = ({ data }) => {
+export const UserAvatar: FC<UserAvatarProps> = ({ user }) => {
   return (
     <Avatar
-      src={data.image}
+      src={user.image}
       sx={{
         width: 60,
         height: 60,
         bgcolor: 'primary.main',
       }}
     >
-      {getEmptyAvatar(data)}
+      {getEmptyAvatar(user)}
     </Avatar>
   );
 };

@@ -37,7 +37,6 @@ export const postsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(postsApi.endpoints.updatePost.matchFulfilled, (state, action) => {
-      console.log(state.liked);
       const updateActionType = action.meta.arg.originalArgs.action;
       switch (updateActionType) {
         case PostUpdateAction.LIKE:

@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import type { UserMutationFormValues } from './types';
 import { Gender, UserRoles } from '@/entities/user';
 import type { FormField } from '@/features';
-import { Input, InputMask, InputPassword } from '@/shared/ui';
+import { Input, InputMask, InputPassword, Select } from '@/shared/ui';
 
 export enum FieldNames {
   FIRST_NAME = 'firstName',
@@ -16,6 +16,16 @@ export enum FieldNames {
   BIRTH_DATE = 'birthDate',
   ROLE = 'role',
 }
+
+const GENDER_SELECT_OPTIONS = [
+  { label: 'Male', value: Gender.MALE },
+  { label: 'Female', value: Gender.FEMALE },
+];
+
+const ROLE_SELECT_OPTIONS = [
+  { label: 'Admin', value: UserRoles.ADMIN },
+  { label: 'User', value: UserRoles.USER },
+];
 
 export const defaultValues: UserMutationFormValues = {
   [FieldNames.FIRST_NAME]: 'awdawdwad',
@@ -47,41 +57,61 @@ export const formFields: FormField<UserMutationFormValues>[] = [
   {
     name: FieldNames.FIRST_NAME,
     Component: Input,
+    gridProps: { size: { xs: 12, sm: 6 } },
   },
   {
     name: FieldNames.LAST_NAME,
     Component: Input,
+    gridProps: { size: { xs: 12, sm: 6 } },
   },
   {
     name: FieldNames.EMAIL,
     Component: Input,
+    gridProps: { size: { xs: 12 } },
   },
   {
     name: FieldNames.PHONE,
     Component: InputMask,
+    gridProps: { size: { xs: 12 } },
   },
   {
     name: FieldNames.USERNAME,
     Component: Input,
+    gridProps: { size: { xs: 12 } },
   },
   {
     name: FieldNames.GENDER,
-    Component: InputMask,
+    Component: (props) => (
+      <Select
+        {...props}
+        options={GENDER_SELECT_OPTIONS}
+      />
+    ),
+    gridProps: { size: { xs: 6 } },
+  },
+  {
+    name: FieldNames.ROLE,
+    Component: (props) => (
+      <Select
+        {...props}
+        options={ROLE_SELECT_OPTIONS}
+      />
+    ),
+    gridProps: { size: { xs: 6 } },
   },
   {
     name: FieldNames.BIRTH_DATE,
     Component: InputMask,
-  },
-  {
-    name: FieldNames.ROLE,
-    Component: InputMask,
+    gridProps: { size: { xs: 12 } },
   },
   {
     name: FieldNames.PASSWORD,
     Component: InputPassword,
+    gridProps: { size: { xs: 12, md: 6 } },
   },
   {
     name: FieldNames.PASSWORD_REPEAT,
     Component: InputPassword,
+    gridProps: { size: { xs: 12, md: 6 } },
   },
 ];

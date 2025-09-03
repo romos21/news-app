@@ -2,46 +2,36 @@ import type { FC } from 'react';
 import { Typography, Card, CardHeader, Avatar, Chip } from '@/shared/ui';
 import { getFullName } from '../lib';
 import type { User } from '../types';
+import { UserAvatar } from './UserAvatar';
 
 export type UserCardProps = {
-  data: User;
+  user: User;
 };
 
-export const UserCard: FC<UserCardProps> = ({ data }) => {
+export const UserCard: FC<UserCardProps> = ({ user }) => {
+  const { username, role } = user;
   return (
     <Card
       sx={{
-        maxWidth: 400,
-        mx: 'auto',
-        mt: 3,
         boxShadow: 3,
         borderRadius: 2,
+        display: 'block',
+        height: '100%',
       }}
     >
       <CardHeader
-        avatar={
-          <Avatar
-            src={data.image}
-            sx={{
-              width: 60,
-              height: 60,
-              bgcolor: 'primary.main',
-            }}
-          >
-            {getFullName(data)}
-          </Avatar>
-        }
+        avatar={<UserAvatar user={user} />}
         title={
           <Typography
             variant='h6'
             component='h3'
           >
-            {getFullName(data)} (@{data.username})
+            {getFullName(user)} (@{username})
           </Typography>
         }
         subheader={
           <Chip
-            label={data.role}
+            label={role}
             size='small'
             color='primary'
             variant='outlined'

@@ -3,7 +3,5 @@ export const API_AUTH_REDUCER_PATH = 'authApi';
 export const API_AUTH_URLS = {
   SIGN_IN: `${API_AUTH_BASE_URL}/login`,
   GET_ME: `${API_AUTH_BASE_URL}/me`,
+  REFRESH_TOKEN: `${API_AUTH_BASE_URL}/refresh`,
 };
-export enum ApiAuthTags {
-  ME = 'ME',
-}

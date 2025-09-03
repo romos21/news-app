@@ -17,10 +17,11 @@ export const InputPassword: FC<InputPasswordProps> = (props) => {
       type={showPassword ? 'text' : 'password'}
       slotProps={{
         input: {
-          startAdornment: (
+          endAdornment: (
             <InputAdornment
               position='end'
               onClick={handleShowPassword}
+              sx={{ ml: 2, cursor: 'pointer' }}
             >
               {showPassword ?
                 <VisibilityOff />

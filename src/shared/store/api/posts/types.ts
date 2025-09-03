@@ -13,6 +13,6 @@ export type UpdatePostRequest = Partial<Post> & {
 };
 
 export type CreatePostResponse = ApiResponse<Post>;
-export type CreatePostRequest = Post;
+export type CreatePostRequest = Pick<Post, 'userId' | 'title' | 'body'>;
 
 export type DeletePostResponse = ApiResponse<Pick<Post, 'id'>>;

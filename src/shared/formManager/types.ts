@@ -6,6 +6,7 @@ import type {
   SubmitHandler as RHFSubmitHandler,
   FieldPath as RHFFieldPath,
   UseFormRegisterReturn,
+  DeepPartialSkipArrayKey,
 } from 'react-hook-form';
 import type { ObjectSchema } from 'yup';
 
@@ -25,4 +26,5 @@ type FormState<T extends FieldValues = FieldValues> = Omit<RHFFormState<T>, 'err
 
 export type FormReturn<T extends FieldValues = FieldValues> = Omit<UseFormReturn<T>, 'formState'> & {
   formState: FormState<T>;
+  values: DeepPartialSkipArrayKey<T>;
 };

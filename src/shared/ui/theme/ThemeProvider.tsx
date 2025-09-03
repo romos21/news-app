@@ -7,6 +7,7 @@ export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <MUIThemeProvider
       theme={theme}
+      defaultMode='light'
       noSsr
     >
       <CssBaseline />

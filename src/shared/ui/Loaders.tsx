@@ -1,7 +1,9 @@
 import MuiBackdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import MuiCircularProgress from '@mui/material/CircularProgress';
 import type { FC } from 'react';
 export * from '@mui/material/Backdrop';
+
+export const CircularProgress = MuiCircularProgress;
 
 export const Backdrop: FC<{ open: boolean }> = ({ open }) => {
   return (

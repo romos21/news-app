@@ -3,6 +3,7 @@ import type { ApiResponse } from '../types';
 
 export type SignInResponse = ApiResponse<{
   accessToken: string;
+  refreshToken: string;
 }>;
 
 export type SignInRequest = Pick<User, 'username'> & {

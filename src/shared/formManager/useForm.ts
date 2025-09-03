@@ -1,4 +1,4 @@
-import { useForm as useRHFForm, type Resolver } from 'react-hook-form';
+import { useForm as useRHFForm, useWatch, type Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { FieldValues, FormOptions, FormReturn } from './types';
 
@@ -9,6 +9,8 @@ export const useForm = <T extends FieldValues>(options: FormOptions<T>): FormRet
     ...restOptions,
     resolver: yupResolver(validationSchema) as unknown as Resolver<T>,
   });
+
+  const values = useWatch({ control: form.control });
 
   const formattedErrors = Object.fromEntries(
     Object.entries(form.formState.errors).map(([key, error]) => [
@@ -23,5 +25,6 @@ export const useForm = <T extends FieldValues>(options: FormOptions<T>): FormRet
       ...form.formState,
       errors: formattedErrors,
     },
+    values,
   };
 };

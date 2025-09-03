@@ -18,14 +18,16 @@ export type SelectProps = Omit<MuiSelectProps, 'error' | 'helperText'> & {
   options: SelectOption[];
 };
 
-export const Select: FC<SelectProps> = ({ error, options, ...rest }) => {
+export const Select: FC<SelectProps> = ({ error, options, value, ...rest }) => {
   const isError = !!error;
 
   return (
     <Container>
       <MuiSelect
-        {...rest}
+        value={value || ''}
+        fullWidth
         error={isError}
+        {...rest}
       >
         {options.map(({ value, label }) => (
           <MenuItem

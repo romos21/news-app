@@ -1,25 +1,34 @@
-import type { FC } from 'react';
+import { useCallback, type FC } from 'react';
 import { defaultValues, formFields, validationSchema } from './formConfig';
 import { Button } from '@/shared/ui';
-import { skipToken, useGetUserQuery, useUpdateUserMutation, type UpdateUserResponse } from '@/shared/store/api';
+import { useUpdateUserMutation, type UpdateUserResponse } from '@/shared/store/api';
 import type { UserMutationFormValues } from './types';
 import { Form } from '@/features';
-import { useParams } from 'react-router';
+import type { User } from '../../types';
 
-export const UpdateUserForm: FC = () => {
-  const { id } = useParams();
-  const [updateUser, { isLoading: isUpdating, isError: isUpdatingError, isSuccess, data }] = useUpdateUserMutation();
+interface UpdateUserFormProps {
+  user: User;
+}
 
-  const { data: userData, isLoading: isDataLoading, isError: isDataLoadingError } = useGetUserQuery(id ?? skipToken);
+export const UpdateUserForm: FC<UpdateUserFormProps> = ({ user }) => {
+  const [updateUser, { isLoading, isError, isSuccess, data }] = useUpdateUserMutation();
+
+  const onSubmit = useCallback(
+    (values: UserMutationFormValues) => {
+      updateUser(values);
+    },
+    [updateUser],
+  );
 
   return (
     <Form<UserMutationFormValues, UpdateUserResponse>
-      defaultValues={userData || defaultValues}
+      defaultValues={user || defaultValues}
       validationSchema={validationSchema}
       formFields={formFields}
-      onSubmit={updateUser}
-      isError={isDataLoadingError || isUpdatingError}
-      isLoading={isDataLoading || isUpdating}
+      gridProps={{ spacing: 2 }}
+      onSubmit={onSubmit}
+      isError={isError}
+      isLoading={isLoading}
       isSuccess={isSuccess}
       submitResult={data}
       actionAdornment={

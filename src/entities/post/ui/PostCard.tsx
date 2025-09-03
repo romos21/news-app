@@ -9,76 +9,36 @@ import {
   IconButton,
   Tooltip,
   Divider,
+  ButtonLink,
 } from '@/shared/ui';
 import { ThumbUp, ThumbDown, Star } from '@/shared/ui/icons';
-import { PostUpdateAction, type Post } from '../types';
-import { NavLink } from 'react-router';
-import { useMyPostManipulationsState } from '../lib';
-import { useUpdatePostMutation } from '@/shared/store/api';
+import type { Post } from '../types';
+import { useMyPostManipulationsState, usePostActions } from '../lib';
 
 interface PostCardProps {
-  data: Post;
+  post: Post;
   link?: string;
 }
 
 const CardHeader: FC<Pick<Post, 'title' | 'userId'>> = ({ title, userId }) => {
   return (
     <UICardHeader
-      title={
-        <Typography
-          variant='h6'
-          component='h2'
-          noWrap
-        >
-          {title}
-        </Typography>
-      }
+      title={<Typography variant='h6'>{title}</Typography>}
       subheader={`User #${userId}`}
     />
   );
 };
 
-export const PostCard: FC<PostCardProps> = ({ data: { id, body, reactions, title, userId }, link }) => {
-  const [updatePost] = useUpdatePostMutation();
-  const { isLiked, isDisliked, isStarred } = useMyPostManipulationsState(id);
-
-  const setLike = () => {
-    updatePost({
-      id,
-      action: PostUpdateAction.LIKE,
-      reactions: {
-        ...reactions,
-        likes: isLiked ? reactions.likes - 1 : reactions.likes + 1,
-        dislikes: isDisliked ? reactions.dislikes - 1 : reactions.dislikes,
-      },
-    });
-  };
-
-  const setDislike = () => {
-    updatePost({
-      id,
-      action: PostUpdateAction.DISLIKE,
-      reactions: {
-        ...reactions,
-        dislikes: isDisliked ? reactions.dislikes - 1 : reactions.dislikes + 1,
-        likes: isLiked ? reactions.likes - 1 : reactions.likes,
-      },
-    });
-  };
-
-  const setStarred = () => {
-    updatePost({
-      id,
-      action: PostUpdateAction.STARRED,
-      reactions,
-    });
-  };
+export const PostCard: FC<PostCardProps> = ({ post, link }) => {
+  const { body, reactions, title, userId } = post;
+  const { isLiked, isDisliked, isStarred } = useMyPostManipulationsState(post);
+  const { setDislike, setLike, setStarred } = usePostActions(post);
 
   return (
     <Card
       sx={{
         maxWidth: '100%',
-        mb: 3,
+        height: '100%',
         transition: 'box-shadow 0.2s ease-in-out',
         '&:hover': {
           boxShadow: 6,
@@ -87,12 +47,12 @@ export const PostCard: FC<PostCardProps> = ({ data: { id, body, reactions, title
       elevation={2}
     >
       {link ?
-        <NavLink to={link}>
+        <ButtonLink to={link}>
           <CardHeader
             title={title}
             userId={userId}
           />
-        </NavLink>
+        </ButtonLink>
       : <CardHeader
           title={title}
           userId={userId}

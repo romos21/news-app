@@ -8,7 +8,7 @@ export const API_POSTS_URLS = {
   GET_BY_USER: `${API_POSTS_BASE_URL}/user`,
   GET_ALL: `${API_POSTS_BASE_URL}/search`,
 };
-export enum ApiPostsTags {
-  POST = 'POST',
-  POSTS = 'POSTS',
-}
+export const DEFAULT_REACTIONS_ENTITY = {
+  likes: 0,
+  dislikes: 0,
+};
