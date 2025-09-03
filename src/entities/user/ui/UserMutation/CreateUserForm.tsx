@@ -31,7 +31,7 @@ export const CreateUserForm: FC = () => {
           type='submit'
           variant='contained'
         >
-          Sign Up
+          Create User
         </Button>
       }
     />

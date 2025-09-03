@@ -2,7 +2,6 @@ import { createBrowserRouter, Navigate } from 'react-router';
 import {
   AuthLayout,
   SignInPage,
-  SignUpPage,
   PostsPage,
   PostPage,
   MePage,
@@ -26,10 +25,7 @@ export const router = createBrowserRouter([
   {
     path: RoutePath.AUTH,
     element: <AuthLayout />,
-    children: [
-      { path: RoutePath.SIGN_IN, element: <SignInPage /> },
-      { path: RoutePath.SIGN_UP, element: <SignUpPage /> },
-    ],
+    children: [{ path: RoutePath.SIGN_IN, element: <SignInPage /> }],
   },
   {
     path: RoutePath.APP,

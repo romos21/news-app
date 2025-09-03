@@ -30,7 +30,7 @@ export const SignInPage: FC = () => {
           type='submit'
           variant='contained'
         >
-          Sign Up
+          Sign In
         </Button>
       }
     />
