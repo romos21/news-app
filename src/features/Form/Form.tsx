@@ -18,11 +18,7 @@ export const Form = <TFormValues extends FieldValues, TResponse extends ApiRespo
 }: FormProps<TFormValues, TResponse>) => {
   const [toasterState, setToasterState] = useState<FormToasterState | null>(null);
 
-  const {
-    handleSubmit,
-    formState: { errors },
-    control,
-  } = useForm<TFormValues>({
+  const { handleSubmit, control } = useForm<TFormValues>({
     defaultValues,
     validationSchema,
   });

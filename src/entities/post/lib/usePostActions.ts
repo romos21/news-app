@@ -1,8 +1,6 @@
-import { useDeletePostMutation, useGetMeQuery, useUpdatePostMutation } from '@/shared/store/api';
+import { useDeletePostMutation, useUpdatePostMutation } from '@/shared/store/api';
 import { PostUpdateAction, type Post } from '../types';
 import { useMyPostManipulationsState } from './useMyPostManipulationsState';
-import { useMemo } from 'react';
-import { UserRoles } from '@/entities/user';
 
 export type usePostActionsReturnType = {
   setLike: () => void;

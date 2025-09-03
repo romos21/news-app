@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Typography, Card, CardHeader, Avatar, Chip } from '@/shared/ui';
+import { Typography, Card, CardHeader, Chip } from '@/shared/ui';
 import { getFullName } from '../lib';
 import type { User } from '../types';
 import { UserAvatar } from './UserAvatar';

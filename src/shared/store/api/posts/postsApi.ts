@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import type {
   GetAllPostsResponse,
-  GetPostRequest,
   GetPostResponse,
   CreatePostResponse,
   CreatePostRequest,
@@ -36,7 +35,7 @@ export const postsApi = createApi({
         method: 'POST',
         body,
       }),
-      async onQueryStarted(res, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const { data: createdPost } = await queryFulfilled;
 
         const formattedPost = {
@@ -65,7 +64,7 @@ export const postsApi = createApi({
         url: `${API_POSTS_URLS.UPDATE}/${id}`,
         body,
       }),
-      async onQueryStarted(res, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const { data: updatedPost } = await queryFulfilled;
 
         // update getAllPosts API cache
@@ -96,7 +95,7 @@ export const postsApi = createApi({
         method: 'DELETE',
         url: `${API_POSTS_URLS.DELETE}/${id}`,
       }),
-      async onQueryStarted(res, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const { data: deletedPost } = await queryFulfilled;
 
         // update getAllPosts API cache

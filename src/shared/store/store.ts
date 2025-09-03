@@ -3,8 +3,6 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import storage from 'redux-persist/lib/storage';
 import { authApi, usersApi, postsApi, commentsApi } from './api';
 import { authSlice, postsSlice } from './reducers';
-import { useSelector, useDispatch, type TypedUseSelectorHook } from 'react-redux';
-import type { AppDispatch, RootState } from './types';
 
 const persistConfig = {
   key: 'newsApp',

@@ -13,7 +13,7 @@ export const commentsApi = createApi({
         method: 'POST',
         body,
       }),
-      async onQueryStarted(res, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const { data: newComment } = await queryFulfilled;
 
         // update getPostComments API cache
