@@ -18,13 +18,13 @@ export const validationSchema = Yup.object({
   [FieldNames.BODY]: Yup.string().required(),
 });
 
-export const formFields: FormField<PostMutationFormValues>[] = [
+export const getFormFields = (t: (key: string) => string): FormField<PostMutationFormValues>[] => [
   {
     name: FieldNames.TITLE,
     Component: (props) => (
       <Input
         fullWidth
-        label={'Title'}
+        label={t('post:createPostForm:formLabels:title')}
         {...props}
       />
     ),
@@ -37,7 +37,7 @@ export const formFields: FormField<PostMutationFormValues>[] = [
         fullWidth
         multiline
         rows={2}
-        label={'Post Content'}
+        placeholder={t('post:createPostForm:formLabels:body')}
         {...props}
       />
     ),

@@ -1,5 +1,5 @@
 export interface ApiResponseError {
-  message: string;
+  message?: string;
 }
 
 // Guys just didn't add any statusCode to error response

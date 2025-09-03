@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import type { GetMeResponse, SignInRequest, SignInResponse } from './types';
 import { API_AUTH_BASE_URL, API_AUTH_URLS, API_AUTH_REDUCER_PATH } from './constants';
-import { fetchBaseQuery } from '../lib';
+import { fetchBaseQuery, transformUserResponse } from '../lib';
 
 export const authApi = createApi({
   reducerPath: API_AUTH_REDUCER_PATH,
@@ -19,6 +19,7 @@ export const authApi = createApi({
     }),
     getMe: build.query<GetMeResponse, void>({
       query: () => API_AUTH_URLS.GET_ME,
+      transformResponse: transformUserResponse,
     }),
   }),
 });

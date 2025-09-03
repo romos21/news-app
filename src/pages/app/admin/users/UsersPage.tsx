@@ -1,13 +1,16 @@
 import { useState, type ChangeEvent, type FC } from 'react';
 import { useGetAllUsersQuery, useDebounce } from '@/shared/store/api';
-import { Backdrop, ButtonLink, CircularProgress, Container, GridContainer, Input, Toaster } from '@/shared/ui';
+import { ButtonLink, CircularProgress, Container, GridContainer, Toaster } from '@/shared/ui';
 import { UserCard } from '@/entities/user';
 import { PAGE_PATHS } from '@/shared/constants';
+import { Input } from '@/shared/ui';
+import { useTranslation } from '@/shared/i18n';
 
 export const UsersPage: FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [debouncedQuery] = useDebounce(searchValue, 300);
   const { isFetching, isError, data: usersList } = useGetAllUsersQuery(debouncedQuery);
+  const { t } = useTranslation(['common', 'user']);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -21,11 +24,12 @@ export const UsersPage: FC = () => {
       alignItems='center'
       sx={{ ml: 4, mr: 4 }}
     >
-      {isError && <Toaster severity='error'>Oops... Something went wrong</Toaster>}
+      {isError && <Toaster severity='error'>{t('common:oops')}</Toaster>}
       <Input
         value={searchValue}
         onChange={onChange}
         sx={{ width: 600, maxWidth: '100%', mb: 4 }}
+        placeholder={t('user:globalSearchPlaceholder')}
       />
       {isFetching ?
         <CircularProgress />

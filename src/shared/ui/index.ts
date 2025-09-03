@@ -13,4 +13,5 @@ export * from './Tooltip';
 export * from './Select';
 export * from './Accordion';
 export * from './Modal';
+export * from './DatePicker';
 export * from './theme';

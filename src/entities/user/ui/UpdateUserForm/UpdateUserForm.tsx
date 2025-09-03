@@ -1,17 +1,20 @@
-import { useCallback, type FC } from 'react';
-import { defaultValues, formFields, validationSchema } from './formConfig';
+import { useCallback, useEffect, type FC } from 'react';
+import { defaultValues, getFormFields, getValidationSchema } from './formConfig';
 import { Button } from '@/shared/ui';
 import { useUpdateUserMutation, type UpdateUserResponse } from '@/shared/store/api';
 import type { UserMutationFormValues } from './types';
 import { Form } from '@/features';
 import type { User } from '../../types';
+import { useTranslation } from '@/shared/i18n';
 
 interface UpdateUserFormProps {
   user: User;
+  onSuccess?: () => void;
 }
 
-export const UpdateUserForm: FC<UpdateUserFormProps> = ({ user }) => {
+export const UpdateUserForm: FC<UpdateUserFormProps> = ({ user, onSuccess }) => {
   const [updateUser, { isLoading, isError, isSuccess, data }] = useUpdateUserMutation();
+  const { t } = useTranslation(['common', 'user']);
 
   const onSubmit = useCallback(
     (values: UserMutationFormValues) => {
@@ -20,11 +23,15 @@ export const UpdateUserForm: FC<UpdateUserFormProps> = ({ user }) => {
     [updateUser],
   );
 
+  useEffect(() => {
+    isSuccess && onSuccess?.();
+  }, [isSuccess, onSuccess]);
+
   return (
     <Form<UserMutationFormValues, UpdateUserResponse>
       defaultValues={user || defaultValues}
-      validationSchema={validationSchema}
-      formFields={formFields}
+      validationSchema={getValidationSchema(t)}
+      formFields={getFormFields(t)}
       gridProps={{ spacing: 2 }}
       onSubmit={onSubmit}
       isError={isError}

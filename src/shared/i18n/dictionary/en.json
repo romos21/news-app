@@ -1,3 +1,72 @@
 {
-
+	"common": {
+		"save": "Save",
+		"oops": "Oops... Something went wrong",
+		"create": "Create",
+		"delete": "Delete",
+		"posts": "Posts",
+		"users": "Users"
+	},
+	"signInPage": {
+		"title": "Welcome",
+		"subtitle": "Feel free to sign into your account",
+		"submitBtn": "Sign In",
+		"formLabels": {
+			"username": "Username",
+			"password": "Password"
+		},
+		"formErrors": {
+			"passwordsMustMatch": "Passwords must match"
+		}
+	},
+	"user": {
+		"contactInformation": "Contact Information",
+		"birthDate": "Date of Birth",
+		"globalSearchPlaceholder": "Search users...",
+		"gender": {
+			"male": "Male",
+			"female": "Female"
+		},
+		"role": {
+			"admin": "Admin",
+			"user": "User"
+		},
+		"editModal": {
+			"title": "Edit User Data"
+		},
+		"formLabels": {
+			"firstName": "First name",
+			"lastName": "Last name",
+			"username": "Username",
+			"password": "Password",
+			"passwordRepeat": "Repeat password",
+			"email": "Email address",
+			"gender": "Gender",
+			"role": "User role",
+			"phone": "Phone number",
+			"birthDate": "Date of Birth"
+		}
+	},
+	"post": {
+		"globalSearchPlaceholder": "Search posts...",
+		"globalFilterLabel": "Filter by user...",
+		"createNewTitle": "Create new post",
+		"likes": "Likes",
+		"dislikes": "Dislikes",
+		"starred": "Starred",
+		"createPostForm": {
+			"submitBtn": "Create Post",
+			"formLabels": {
+				"title": "Title",
+				"body": "Content"
+			}
+		}
+	},
+	"comment": {
+		"title": "Comments",
+		"cardTitle": "Comment",
+		"formLabels": {
+			"body": "Write something..."
+		}
+	}
 }

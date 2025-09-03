@@ -5,11 +5,22 @@ import {
   useDebounce,
   useGetUserFilterOptionsQuery,
 } from '@/shared/store/api';
-import { Container, GridContainer, Input, Modal, Select, Toaster, Tooltip, type SelectChangeEvent } from '@/shared/ui';
+import {
+  Container,
+  GridContainer,
+  Input,
+  Modal,
+  Select,
+  Toaster,
+  Tooltip,
+  CircularProgress,
+  IconButton,
+  type SelectChangeEvent,
+} from '@/shared/ui';
 import { PostCard } from '@/entities/post';
 import { PAGE_PATHS } from '@/shared/constants';
-import { CircularProgress, IconButton } from '@mui/material';
 import { AddCircle } from '@/shared/ui/icons';
+import { useTranslation } from '@/shared/i18n';
 
 const CreatePostForm = lazy(async () => {
   const module = await import('@/entities/post');
@@ -17,6 +28,7 @@ const CreatePostForm = lazy(async () => {
 });
 
 export const PostsPage: FC = () => {
+  const { t } = useTranslation(['common', 'post']);
   const [showCreatePostModal, setShowCreatePostModal] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
   const [userFilterValue, setUserFilterValue] = useState<string>('');
@@ -59,12 +71,13 @@ export const PostsPage: FC = () => {
       justifyContent='center'
       alignItems='center'
     >
-      {isError && <Toaster severity='error'>Oops... Something went wrong</Toaster>}
+      {isError && <Toaster severity='error'>{t('common:oops')}</Toaster>}
       <GridContainer
         container
         display='flex'
         justifyContent='space-between'
-        alignItems='center'
+        alignItems='flex-end'
+        spacing={2}
         sx={{ width: '100%', m: '0px auto 80px', maxWidth: 640 }}
       >
         <GridContainer size={{ xs: 12, sm: 8 }}>
@@ -72,7 +85,7 @@ export const PostsPage: FC = () => {
             sx={{ width: '100%' }}
             value={searchValue}
             onChange={onSearchChange}
-            placeholder='Search for posts...'
+            placeholder={t('post:globalSearchPlaceholder')}
           />
         </GridContainer>
         <GridContainer size={{ xs: 12, sm: 4 }}>
@@ -81,7 +94,7 @@ export const PostsPage: FC = () => {
             value={userFilterValue}
             onChange={onUserFilterValueChange}
             options={userFilterOptions}
-            label='Filter by user'
+            label={t('post:globalFilterLabel')}
           />
         </GridContainer>
       </GridContainer>
@@ -109,7 +122,7 @@ export const PostsPage: FC = () => {
           ))}
         </GridContainer>
       }
-      <Tooltip title='Create new post'>
+      <Tooltip title={t('post:createNewTitle')}>
         <IconButton
           size='small'
           onClick={handleShowCreatePostModal}
@@ -128,7 +141,7 @@ export const PostsPage: FC = () => {
       <Modal
         open={showCreatePostModal}
         onClose={handleShowCreatePostModal}
-        title='Create new post'
+        title={t('post:createNewTitle')}
         fullWidth
         maxWidth='md'
       >

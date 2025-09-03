@@ -1,3 +1,72 @@
 {
-
+  "common": {
+    "save": "Сохранить",
+    "oops": "Упс... Что-то пошло не так",
+    "create": "Создать",
+    "delete": "Удалить",
+    "posts": "Посты",
+    "users": "Пользователи"
+  },
+  "signInPage": {
+    "title": "Добро пожаловать",
+    "subtitle": "Войдите в свой аккаунт",
+    "submitBtn": "Войти",
+    "formLabels": {
+      "username": "Имя пользователя",
+      "password": "Пароль"
+    },
+    "formErrors": {
+      "passwordsMustMatch": "Пароли должны совпадать"
+    }
+  },
+  "user": {
+    "contactInformation": "Контактная информация",
+    "birthDate": "Дата рождения",
+    "globalSearchPlaceholder": "Поиск пользователей...",
+    "gender": {
+      "male": "Мужской",
+      "female": "Женский"
+    },
+    "role": {
+      "admin": "Администратор",
+      "user": "Пользователь"
+    },
+    "editModal": {
+      "title": "Редактирование данных пользователя"
+    },
+    "formLabels": {
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "username": "Имя пользователя",
+      "password": "Пароль",
+      "passwordRepeat": "Повторите пароль",
+      "email": "Email адрес",
+      "gender": "Пол",
+      "role": "Роль пользователя",
+      "phone": "Номер телефона",
+      "birthDate": "Дата рождения"
+    }
+  },
+  "post": {
+    "globalSearchPlaceholder": "Поиск постов...",
+    "globalFilterLabel": "Пользователь",
+    "createNewTitle": "Создать новый пост",
+    "likes": "Лайки",
+    "dislikes": "Дизлайки",
+    "starred": "В избранном",
+    "createPostForm": {
+      "submitBtn": "Создать пост",
+      "formLabels": {
+        "title": "Заголовок",
+        "body": "Содержание"
+      }
+    }
+  },
+  "comment": {
+    "title": "Комментарии",
+    "cardTitle": "Комментарий",
+    "formLabels": {
+      "body": "Напишите что-нибудь..."
+    }
+  }
 }

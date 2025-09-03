@@ -1,12 +1,15 @@
 import { Card, CardContent, CardHeader, Typography, Container, Chip } from '@/shared/ui';
 import type { FC } from 'react';
 import type { Comment } from '../types';
+import { useTranslation } from '@/shared/i18n';
 
 interface CommentCardProps {
   data: Comment;
 }
 
 export const CommentCard: FC<CommentCardProps> = ({ data: { id, body, user } }) => {
+  const { t } = useTranslation(['comment']);
+
   return (
     <Card
       sx={{
@@ -42,7 +45,7 @@ export const CommentCard: FC<CommentCardProps> = ({ data: { id, body, user } }) 
             color='text.secondary'
             component='span'
           >
-            Comment #{id}
+            {t('comment:cardTitle')} #{id}
           </Typography>
         }
         sx={{

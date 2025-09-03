@@ -1,4 +1,3 @@
-import { styled } from '@mui/material';
 import MuiButton, { type ButtonProps } from '@mui/material/Button';
 export * from '@mui/material/Button';
 import MuiIconButton from '@mui/material/IconButton';

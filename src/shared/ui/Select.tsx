@@ -3,6 +3,7 @@ import type { ChangeEvent, FC } from 'react';
 import { Container } from './Container';
 import FormHelperText from '@mui/material/FormHelperText';
 import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
 
 export type SelectChangeEvent<Value = unknown> =
   | ChangeEvent<HTMLInputElement>
@@ -18,13 +19,18 @@ export type SelectProps = Omit<MuiSelectProps, 'error' | 'helperText'> & {
   options: SelectOption[];
 };
 
-export const Select: FC<SelectProps> = ({ error, options, value, ...rest }) => {
+export const Select: FC<SelectProps> = ({ error, options, name, value, label, ...rest }) => {
   const isError = !!error;
 
   return (
     <Container>
+      <InputLabel id={`${name}-label}`}>{label}</InputLabel>
       <MuiSelect
+        id={name}
+        labelId={`${name}-label}`}
         value={value || ''}
+        label={label}
+        name={name}
         fullWidth
         error={isError}
         {...rest}

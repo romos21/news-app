@@ -14,6 +14,7 @@ import {
 import { ThumbUp, ThumbDown, Star } from '@/shared/ui/icons';
 import type { Post } from '../types';
 import { useMyPostManipulationsState, usePostActions } from '../lib';
+import { useTranslation } from '@/shared/i18n';
 
 interface PostCardProps {
   post: Post;
@@ -33,6 +34,7 @@ export const PostCard: FC<PostCardProps> = ({ post, link }) => {
   const { body, reactions, title, userId } = post;
   const { isLiked, isDisliked, isStarred } = useMyPostManipulationsState(post);
   const { setDislike, setLike, setStarred } = usePostActions(post);
+  const { t } = useTranslation(['common', 'post']);
 
   return (
     <Card
@@ -75,7 +77,7 @@ export const PostCard: FC<PostCardProps> = ({ post, link }) => {
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'space-between', px: 2 }}>
-        <Tooltip title='Dislike'>
+        <Tooltip title={t('post:starred')}>
           <IconButton
             size='large'
             onClick={setStarred}
@@ -85,7 +87,7 @@ export const PostCard: FC<PostCardProps> = ({ post, link }) => {
         </Tooltip>
         <Container sx={{ display: 'flex', gap: 2 }}>
           <Container sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Tooltip title='Like'>
+            <Tooltip title={t('post:likes')}>
               <IconButton
                 size='small'
                 onClick={setLike}
@@ -101,7 +103,7 @@ export const PostCard: FC<PostCardProps> = ({ post, link }) => {
             </Typography>
           </Container>
           <Container sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Tooltip title='Dislike'>
+            <Tooltip title={t('post:dislikes')}>
               <IconButton
                 size='small'
                 onClick={setDislike}

@@ -1,6 +1,7 @@
 import { useEffect, useState, lazy, Suspense, type FC } from 'react';
 import { useLazyGetPostCommentsQuery } from '@/shared/store/api';
 import { Container, Typography, Accordion, CircularProgress } from '@/shared/ui';
+import { useTranslation } from '@/shared/i18n';
 
 const CommentCard = lazy(async () => {
   const module = await import('./CommentCard');
@@ -14,6 +15,7 @@ interface PostCommentsListProps {
 export const PostCommentsList: FC<PostCommentsListProps> = ({ postId }) => {
   const [showComments, setShowComments] = useState<boolean>(false);
   const [loadComments, { data: comments, isLoading: isLoadingComments }] = useLazyGetPostCommentsQuery();
+  const { t } = useTranslation(['common', 'comment']);
 
   const handleShowComments = () => {
     setShowComments((prev) => !prev);
@@ -40,7 +42,7 @@ export const PostCommentsList: FC<PostCommentsListProps> = ({ postId }) => {
               overflow: 'hidden',
             }}
           >
-            Comments: {comments?.length}
+            {t('comment:title')}: {comments?.length}
           </Typography>
         }
       >

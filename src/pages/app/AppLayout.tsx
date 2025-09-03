@@ -14,7 +14,7 @@ export const AppLayout: FC = () => {
   return (
     <Container>
       <AppBar />
-      <Container sx={{ margin: '40px auto', maxWidth: 1400 }}>
+      <Container sx={{ margin: '40px auto', px: 8, maxWidth: 1400 }}>
         <Outlet />
       </Container>
     </Container>

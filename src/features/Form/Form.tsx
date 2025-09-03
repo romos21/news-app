@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useForm, type FieldValues } from '@/shared/formManager';
-import { Toaster, Backdrop, Container, GridContainer } from '@/shared/ui';
+import { useForm, Controller, type FieldValues } from '@/shared/formManager';
+import { Toaster, Backdrop, GridContainer } from '@/shared/ui';
 import type { ApiResponse } from '@/shared/store/api/types';
 import type { FormProps, FormToasterState } from './types';
 
@@ -20,9 +20,8 @@ export const Form = <TFormValues extends FieldValues, TResponse extends ApiRespo
 
   const {
     handleSubmit,
-    register,
     formState: { errors },
-    values,
+    control,
   } = useForm<TFormValues>({
     defaultValues,
     validationSchema,
@@ -52,10 +51,15 @@ export const Form = <TFormValues extends FieldValues, TResponse extends ApiRespo
               {...gridProps}
               key={name}
             >
-              <Component
-                {...register(name)}
-                error={errors[name]}
-                value={values[name]}
+              <Controller
+                name={name}
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Component
+                    {...field}
+                    error={fieldState.error?.message}
+                  />
+                )}
               />
             </GridContainer>
           ))}

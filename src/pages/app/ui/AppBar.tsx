@@ -1,12 +1,14 @@
 import { UserRoles } from '@/entities/user';
 import { PAGE_PATHS } from '@/shared/constants';
+import { useTranslation } from '@/shared/i18n';
 import { useGetMeQuery } from '@/shared/store/api';
-import { Container, Avatar, ButtonLink } from '@/shared/ui';
-import { CircularProgress } from '@mui/material';
+import { Container, Avatar, ButtonLink, CircularProgress } from '@/shared/ui';
+import { Person, Article } from '@/shared/ui/icons';
 import type { FC } from 'react';
 
 export const AppBar: FC = () => {
   const { data: me, isLoading } = useGetMeQuery();
+  const { t } = useTranslation(['common']);
 
   return (
     <Container
@@ -25,8 +27,9 @@ export const AppBar: FC = () => {
             color: theme.palette.background.default,
           })}
           to={PAGE_PATHS.POSTS}
+          startIcon={<Article />}
         >
-          Posts
+          {t('common:posts')}
         </ButtonLink>
         {me?.role === UserRoles.ADMIN && (
           <ButtonLink
@@ -34,14 +37,19 @@ export const AppBar: FC = () => {
               color: theme.palette.background.default,
             })}
             to={PAGE_PATHS.USERS}
+            size='large'
+            startIcon={<Person />}
           >
-            Users
+            {t('common:users')}
           </ButtonLink>
         )}
       </Container>
       {isLoading ?
         <CircularProgress />
-      : <ButtonLink to={PAGE_PATHS.ME}>
+      : <ButtonLink
+          to={PAGE_PATHS.ME}
+          size='large'
+        >
           <Avatar
             src={me?.image}
             alt={me?.username}

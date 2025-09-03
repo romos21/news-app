@@ -1,3 +1,3 @@
 export * from './UserCard';
-export * from './UserMutation';
+export * from './UpdateUserForm';
 export * from './UserProfile';

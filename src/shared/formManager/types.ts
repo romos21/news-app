@@ -7,6 +7,7 @@ import type {
   FieldPath as RHFFieldPath,
   UseFormRegisterReturn,
   DeepPartialSkipArrayKey,
+  ControllerRenderProps as RHFControllerRenderProps,
 } from 'react-hook-form';
 import type { ObjectSchema } from 'yup';
 
@@ -14,6 +15,7 @@ export type FieldValues = RHFFormValues;
 export type SubmitHandler<T extends FieldValues = FieldValues> = RHFSubmitHandler<T>;
 export type FieldPath<T extends FieldValues = FieldValues> = RHFFieldPath<T>;
 export type RegisteredFormField = UseFormRegisterReturn;
+export type ControllerRenderProps = RHFControllerRenderProps;
 
 export type FormOptions<T extends FieldValues = FieldValues> = {
   defaultValues: DefaultValues<T>;

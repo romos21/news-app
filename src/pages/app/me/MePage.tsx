@@ -1,5 +1,6 @@
+import { useTranslation } from '@/shared/i18n';
 import { useGetMeQuery } from '@/shared/store/api';
-import { CircularProgress, Toaster } from '@/shared/ui';
+import { AbsoluteCircularProgress, Toaster } from '@/shared/ui';
 import { lazy, Suspense, type FC } from 'react';
 
 const UserProfile = lazy(async () => {
@@ -9,17 +10,21 @@ const UserProfile = lazy(async () => {
 
 export const MePage: FC = () => {
   const { data, isLoading, isError, isSuccess } = useGetMeQuery();
+  const { t } = useTranslation(['common']);
 
   if (isLoading) {
-    return <CircularProgress />;
+    return <AbsoluteCircularProgress />;
   }
   if (isError) {
-    return <Toaster severity='error'>Oops... Something went wrong</Toaster>;
+    return <Toaster severity='error'>{t('common:oops')}</Toaster>;
   }
   return (
     isSuccess && (
-      <Suspense fallback={<CircularProgress />}>
-        <UserProfile user={data} />
+      <Suspense fallback={<AbsoluteCircularProgress />}>
+        <UserProfile
+          isMe
+          user={data}
+        />
       </Suspense>
     )
   );

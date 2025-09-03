@@ -15,7 +15,7 @@ export const validationSchema = Yup.object({
   [FieldNames.BODY]: Yup.string().required(),
 });
 
-export const formFields: FormField<CommentMutationFormValues>[] = [
+export const getFormFields = (t: (key: string) => string): FormField<CommentMutationFormValues>[] => [
   {
     name: FieldNames.BODY,
     Component: (props) => (
@@ -23,6 +23,7 @@ export const formFields: FormField<CommentMutationFormValues>[] = [
         fullWidth
         multiline
         rows={2}
+        placeholder={t('comment:formLabels:body')}
         {...props}
       />
     ),

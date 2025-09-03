@@ -1,9 +1,9 @@
 import type { FC, ReactNode } from 'react';
-import type { FieldPath, FieldValues, FormOptions, RegisteredFormField } from '@/shared/formManager';
+import type { FieldPath, FieldValues, FormOptions, ControllerRenderProps } from '@/shared/formManager';
 import type { GridProps, ToasterSeverity } from '@/shared/ui';
 import type { ApiResponse } from '@/shared/store/api/types';
 
-export type FormFieldComponent<TValue = any> = FC<RegisteredFormField & { error?: string; value: TValue }>;
+export type FormFieldComponent<TValue = any> = FC<ControllerRenderProps & { error?: string; value: TValue }>;
 
 export type FormField<TFormValues extends FieldValues> = {
   name: FieldPath<TFormValues>;

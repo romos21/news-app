@@ -9,7 +9,7 @@ import type {
   UpdateUserResponse,
 } from './types';
 import { API_USERS_BASE_URL, API_USERS_URLS, API_USERS_REDUCER_PATH, DEFAULT_USER_FILTER_OPTION } from './constants';
-import { fetchBaseQuery } from '../lib';
+import { fetchBaseQuery, transformUserResponse } from '../lib';
 import { getFullName } from '@/entities/user/lib';
 import type { SelectOption } from '@/shared/ui';
 import { authApi } from '../auth';
@@ -20,13 +20,16 @@ export const usersApi = createApi({
   endpoints: (build) => ({
     getUser: build.query<GetUserResponse, string>({
       query: (id) => `${API_USERS_URLS.GET}/${id}`,
+      transformResponse: transformUserResponse,
     }),
     getAllUsers: build.query<GetAllUsersResponse, string>({
       query: (q) => ({
         url: API_USERS_URLS.GET_ALL,
         params: { q },
       }),
-      transformResponse: (res: { users: GetAllUsersResponse }) => res?.users,
+      transformResponse: (res: { users: GetAllUsersResponse }) => {
+        return res.users.map((user) => transformUserResponse(user));
+      },
     }),
     getUserFilterOptions: build.query<SelectOption[], void>({
       query: () => API_USERS_URLS.GET_ALL,
@@ -61,7 +64,7 @@ export const usersApi = createApi({
           usersApi.util.updateQueryData('getAllUsers', '', (draft) => {
             draft.forEach((user) => {
               if (user.id === updatedUser.id) {
-                Object.assign(user, updatedUser);
+                Object.assign(user, transformUserResponse(updatedUser));
               }
             });
           }),
@@ -71,13 +74,13 @@ export const usersApi = createApi({
         if (res.id) {
           dispatch(
             usersApi.util.updateQueryData('getUser', res.id.toString(), (draft) => {
-              Object.assign(draft, updatedUser);
+              Object.assign(draft, transformUserResponse(updatedUser));
             }),
           );
           dispatch(
             authApi.util.updateQueryData('getMe', undefined, (draft) => {
               if (draft.id === res.id) {
-                Object.assign(draft, updatedUser);
+                Object.assign(draft, transformUserResponse(updatedUser));
               }
             }),
           );

@@ -1,9 +1,11 @@
 import { useCallback, type FC } from 'react';
-import { defaultValues, formFields, validationSchema } from './formConfig';
-import { Button } from '@/shared/ui';
+import { defaultValues, getFormFields, validationSchema } from './formConfig';
+import { IconButton } from '@/shared/ui';
 import type { CommentMutationFormValues } from './types';
 import { Form } from '@/features';
 import { useCreateCommentMutation, useGetMeQuery, type CreateCommentResponse } from '@/shared/store/api';
+import { Send } from '@/shared/ui/icons';
+import { useTranslation } from '@/shared/i18n';
 
 interface CreateCommentFormProps {
   postId: number;
@@ -15,6 +17,7 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({ postId }) => {
     createComment,
     { isLoading: creatingComment, isError: creatingCommentError, isSuccess: creatingCommentSuccess, data },
   ] = useCreateCommentMutation();
+  const { t } = useTranslation(['comment']);
 
   const isLoading = loadingMe || creatingComment;
   const isError = meError || creatingCommentError;
@@ -30,7 +33,7 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({ postId }) => {
     <Form<CommentMutationFormValues, CreateCommentResponse>
       defaultValues={defaultValues}
       validationSchema={validationSchema}
-      formFields={formFields}
+      formFields={getFormFields(t)}
       onSubmit={onSubmit}
       isError={isError}
       isLoading={isLoading}
@@ -38,12 +41,9 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({ postId }) => {
       submitResult={data}
       gridProps={{ columnSpacing: 2 }}
       actionAdornment={
-        <Button
-          type='submit'
-          variant='contained'
-        >
-          Post Comment
-        </Button>
+        <IconButton type='submit'>
+          <Send />
+        </IconButton>
       }
     />
   );

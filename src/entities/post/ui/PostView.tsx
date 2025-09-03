@@ -14,6 +14,7 @@ import {
 import { Star, ThumbDown, ThumbUp, Delete } from '@/shared/ui/icons';
 import { useMyPostManipulationsState, usePostActions } from '../lib';
 import { CreateCommentForm, PostCommentsList } from '@/entities/comment';
+import { useTranslation } from '@/shared/i18n';
 
 interface PostViewProps {
   post: Post;
@@ -23,6 +24,7 @@ export const PostView: FC<PostViewProps> = ({ post }) => {
   const { body, reactions, title, userId } = post;
   const { isLiked, isDisliked, isStarred, canDelete } = useMyPostManipulationsState(post);
   const { setDislike, setLike, setStarred, deletePost } = usePostActions(post);
+  const { t } = useTranslation(['common', 'post']);
 
   return (
     <Container>
@@ -59,7 +61,7 @@ export const PostView: FC<PostViewProps> = ({ post }) => {
         <Divider />
         <CardActions sx={{ justifyContent: 'space-between', px: 2 }}>
           <Container sx={{ display: 'flex', gap: 2 }}>
-            <Tooltip title='Star'>
+            <Tooltip title={t('post:starred')}>
               <IconButton
                 size='large'
                 onClick={setStarred}
@@ -68,7 +70,7 @@ export const PostView: FC<PostViewProps> = ({ post }) => {
               </IconButton>
             </Tooltip>
             {canDelete && (
-              <Tooltip title='Delete'>
+              <Tooltip title={t('common:delete')}>
                 <IconButton
                   size='large'
                   onClick={deletePost}
@@ -80,7 +82,7 @@ export const PostView: FC<PostViewProps> = ({ post }) => {
           </Container>
           <Container sx={{ display: 'flex', gap: 2 }}>
             <Container sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Tooltip title='Like'>
+              <Tooltip title={t('post:likes')}>
                 <IconButton
                   size='small'
                   onClick={setLike}
@@ -96,7 +98,7 @@ export const PostView: FC<PostViewProps> = ({ post }) => {
               </Typography>
             </Container>
             <Container sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Tooltip title='Dislike'>
+              <Tooltip title={t('post:dislikes')}>
                 <IconButton
                   size='small'
                   onClick={setDislike}

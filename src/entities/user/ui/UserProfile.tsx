@@ -1,29 +1,38 @@
 import React, { lazy, useCallback, useState } from 'react';
 import { Card, CardContent, CardHeader, Typography, Container, Chip, Divider, IconButton, Modal } from '@/shared/ui';
-import { Edit, Email, Phone, Cake, Person } from '@/shared/ui/icons';
+import { Edit, Email, Phone, Cake, Person, Logout } from '@/shared/ui/icons';
 import type { User } from '../types';
 import { UserAvatar } from './UserAvatar';
 import { getFullName } from '../lib';
-import { formatDate } from '@/shared/lib/dateManager';
-import { useAdminGuard } from '@/shared/store';
+import { dateManager } from '@/shared/dateManager';
+import { useAdminGuard, useAppDispatch } from '@/shared/store';
+import { useTranslation } from '@/shared/i18n';
+import { signOut } from '@/shared/store/reducers';
 
 const UpdateUserForm = lazy(async () => {
-  const module = await import('./UserMutation');
+  const module = await import('./UpdateUserForm');
   return { default: module.UpdateUserForm };
 });
 
 interface UserProfileProps {
   user: User;
+  isMe?: boolean;
 }
 
-export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
+export const UserProfile: React.FC<UserProfileProps> = ({ user, isMe = false }) => {
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const isAdmin = useAdminGuard();
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation(['common', 'user']);
   const { email, phone, username, birthDate, role, gender } = user;
 
   const handleShowEditModal = useCallback(() => {
     setShowEditModal((prev) => !prev);
   }, [setShowEditModal]);
+
+  const handleLogout = () => {
+    dispatch(signOut());
+  };
 
   return (
     <>
@@ -31,7 +40,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
         <Modal
           open={showEditModal}
           onClose={handleShowEditModal}
-          title='Edit user data'
+          title={t('user:editModal:title')}
           fullWidth
           maxWidth='md'
         >
@@ -42,11 +51,18 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
         <CardHeader
           avatar={<UserAvatar user={user} />}
           action={
-            isAdmin && (
-              <IconButton onClick={handleShowEditModal}>
-                <Edit />
-              </IconButton>
-            )
+            <Container>
+              {isAdmin && (
+                <IconButton onClick={handleShowEditModal}>
+                  <Edit />
+                </IconButton>
+              )}
+              {isMe && (
+                <IconButton onClick={handleLogout}>
+                  <Logout />
+                </IconButton>
+              )}
+            </Container>
           }
           title={
             <Typography
@@ -60,12 +76,12 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
           subheader={
             <Container sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
               <Chip
-                label={role}
+                label={t(`user:role:${role}`)}
                 color='primary'
                 size='small'
               />
               <Chip
-                label={gender}
+                label={t(`user:gender:${gender}`)}
                 variant='outlined'
                 size='small'
               />
@@ -91,7 +107,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
             gutterBottom
             sx={{ mb: 2 }}
           >
-            Contact Information
+            {t('user:contactInformation')}
           </Typography>
 
           <Container sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -106,7 +122,9 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
 
           <Container sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
             <Cake sx={{ mr: 1, color: 'text.secondary' }} />
-            <Typography variant='body1'>Born {formatDate(birthDate)}</Typography>
+            <Typography variant='body1'>
+              {t('user:birthDate')} {dateManager(birthDate).format()}
+            </Typography>
           </Container>
         </CardContent>
       </Card>
